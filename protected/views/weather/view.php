@@ -8,15 +8,15 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Weather', 'url'=>array('index')),
-	array('label'=>'Create Weather', 'url'=>array('create')),
-	array('label'=>'Update Weather', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Weather', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Weather', 'url'=>array('admin')),
+	array('label'=>'Список информации по погоде', 'url'=>array('list')),
+	array('label'=>'Создать информацию по погоде', 'url'=>array('create')),
+	array('label'=>'Обновить информацию по погоде', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Удалить информацию по погоде', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Управление информацией по погоде', 'url'=>array('admin')),
 );
 ?>
 
-<h1>View Weather #<?php echo $model->id; ?></h1>
+<h1>Погода для <?php echo $model->station->city->name_ru; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

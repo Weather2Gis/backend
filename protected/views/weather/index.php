@@ -3,16 +3,16 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Weathers',
+	'Погода',
 );
 
 $this->menu=array(
-	array('label'=>'Create Weather', 'url'=>array('create')),
-	array('label'=>'Manage Weather', 'url'=>array('admin')),
+	array('label'=>'Создать информацию по погоде', 'url'=>array('create')),
+	array('label'=>'Управление базой данных погоды', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Weathers</h1>
+<h1>Погода</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
