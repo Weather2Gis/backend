@@ -8,6 +8,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Weather application',
+    'defaultController'=>'weather',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -25,7 +26,7 @@ return array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'123',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
-			//'ipFilters'=>array('127.0.0.1','::1'),
+			'ipFilters'=>array('10.0.2.2'),
 		),
 		
 	),
@@ -37,7 +38,7 @@ return array(
 			'allowAutoLogin'=>true,
 		),
 		// uncomment the following to enable URLs in path-format
-    /*
+/*
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'rules'=>array(
@@ -45,24 +46,21 @@ return array(
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<naction:\w+>'=>'<cotroller>/<action>',
 			),
-		),
-*/
-		'db'=>array(
-			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-		),
+		),*/
+
 		// uncomment the following to use a MySQL database
-		/*
+
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
+			'connectionString' => 'mysql:host=localhost;dbname=weather',
 			'emulatePrepare' => true,
 			'username' => 'root',
-			'password' => '',
+			'password' => '123',
 			'charset' => 'utf8',
 		),
-		*/
+
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
-			'errorAction'=>'site/error',
+			'errorAction'=>'weather/error',
 		),
 		'log'=>array(
 			'class'=>'CLogRouter',
