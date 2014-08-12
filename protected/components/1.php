@@ -34,7 +34,7 @@ class weather
     }
 
 
-    protected function _getParser($parse = 'weather')
+    protected function _getParser($parser = 'weather')
     {
         switch ($parser) {
             case 'weather':
@@ -59,6 +59,6 @@ $data = $qwe->getData('weather');
 foreach ($data as $value) {
     echo $value['name'] . ' ' . $value['temp'] . ' ' . $value['speed'] . ' ' .
          $value['coord_lon']  . ' ' . $value['coord_lat'] . ' ' . $value['humidity'] . ' ' .
-         $value['pressure'] . ' ' . $value['deg'] . ' ' . $value['weather'];
+         $value['pressure'] . ' ' . $value['deg'] . ' ' . $value['weather'].'<br>';
 }
 

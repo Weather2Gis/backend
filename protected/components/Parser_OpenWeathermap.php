@@ -84,41 +84,10 @@ class Parser_OpenWeathermap
 
     public function parse()
     {
-        $result =[];
-        $url = api.resourse.param;
-/*
-        $curl_result =
-        '
-{
-    "list":[
-        {
-            "coord":{"lon":139,"lat":35},
-            "sys":{"country":"JP","sunrise":1369769524,"sunset":1369821049},
-            "weather":[{"id":804,"main":"clouds","description":"overcast clouds","icon":"04n"}],
-            "main":{"temp":289.5,"humidity":89,"pressure":1013,"temp_min":287.04,"temp_max":292.04},
-            "wind":{"speed":7.31,"deg":187.002},
-            "rain":{"3h":0},
-            "clouds":{"all":92},
-            "dt":1369824698,
-            "id":1851632,
-            "name":"Shuzenji",
-            "cod":200
-        }
-    ]
-}';
-        $json = json_decode($curl_result, true);
 
-        if (empty($json['list']))
-            return null;
+        //$url = api.resourse.param;
+        $url = "api.openweathermap.org/data/2.5/box/city?bbox=16,75,179,40,1000&cluster=no";
 
-        foreach ($json['list'] as $city) {
-            $result[$city['id']] = [
-                'name' => $city['name'],
-                'temp' => $city['main']['temp'],
-            ];
-        }
-       // return $result;
-*/
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -138,9 +107,9 @@ class Parser_OpenWeathermap
 
         if (empty($json['list']))
             return null;
-
+        //print_r($json);
         foreach ($json['list'] as $city) {
-            $result[$city['id']] = [
+            $array[$city['id']] = [
                 'name'      => $city['name'],
                 'temp'      => $city['main']['temp'],
                 'speed'     => $city['wind']['speed'],
@@ -149,10 +118,10 @@ class Parser_OpenWeathermap
                 'humidity'  => $city['main']['humidity'],
                 'pressure'  => $city['main']['pressure'],
                 'deg'       => $city['wind']['deg'],
-                'weather'   => $city['weather']['main'],
+                'weather'   => $city['weather']['0']['main']
             ];
         }
 
-        return $json;
+        return $array;
     }
 }
