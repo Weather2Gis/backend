@@ -126,6 +126,7 @@ class WeatherController extends Controller
         $weather = Weather::model()->findAll();
         $json = JSON::encode($weather);
         echo $json;
+
 	}
 
     public function actionList()
