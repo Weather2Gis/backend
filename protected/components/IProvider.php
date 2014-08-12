@@ -12,8 +12,8 @@ interface IProvider{
 
     public  function parse();
 
-    private function process();
+    public function process();
 
-    private function save();
+    public function save();
 
 }
