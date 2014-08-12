@@ -75,12 +75,6 @@ class ValueObject
 
 class Parser_OpenWeathermap
 {
-    protected $api = "http://api.openweathermap.org/data/2.5";
-    protected $resource = "/box/city";
-    protected $params = [
-        "bbox" => '18,76,178,36,10000',
-        "cluster" => "no"
-    ];
 
     public function parse()
     {
@@ -108,20 +102,60 @@ class Parser_OpenWeathermap
         if (empty($json['list']))
             return null;
         //print_r($json);
+
         foreach ($json['list'] as $city) {
             $array[$city['id']] = [
-                'name'      => $city['name'],
-                'temp'      => $city['main']['temp'],
-                'speed'     => $city['wind']['speed'],
+                'name' => $city['name'],
+                'temp' => $city['main']['temp'],
+                'speed' => $city['wind']['speed'],
                 'coord_lon' => $city['coord']['lon'],
                 'coord_lat' => $city['coord']['lat'],
-                'humidity'  => $city['main']['humidity'],
-                'pressure'  => $city['main']['pressure'],
-                'deg'       => $city['wind']['deg'],
-                'weather'   => $city['weather']['0']['main']
+                'humidity' => $city['main']['humidity'],
+                'pressure' => $city['main']['pressure'],
+                'deg' => $city['wind']['deg'],
+                'weather' => $city['weather']['0']['main']
             ];
-        }
 
+                        if ($city['wind']['deg'] <= 22.5 || $city['wind']['deg'] > 337.5) {
+                            $array[$city['id']]['deg'] = 'северный';
+                        }
+                        if ($city['wind']['deg'] <= 67.5 && $city['wind']['deg'] > 22.5) {
+                            $array[$city['id']]['deg'] = 'северо-восточныйный';
+                        }
+                        if ($city['wind']['deg'] <= 112.5 && $city['wind']['deg'] > 67.5) {
+                            $array[$city['id']]['deg'] = 'восточный';
+                        }
+                        if ($city['wind']['deg'] <= 157.5 && $city['wind']['deg'] > 112.5) {
+                            $array[$city['id']]['deg'] = 'юго-восточный';
+                        }
+                        if ($city['wind']['deg'] <= 202.5 && $city['wind']['deg'] > 157.5) {
+                            $array[$city['id']]['deg'] = 'южный';
+                        }
+                        if ($city['wind']['deg'] <= 247.5 && $city['wind']['deg'] > 202.5) {
+                            $array[$city['id']]['deg'] = 'юго-западный';
+                        }
+                        if ($city['wind']['deg'] <= 292.5 && $city['wind']['deg'] > 247.5) {
+                            $array[$city['id']]['deg'] = 'западный';
+                        }
+                        if ($city['wind']['deg'] <= 337.5 && $city['wind']['deg'] > 292.5) {
+                            $array[$city['id']]['deg'] = 'северо-западный';
+                        }
+
+                        switch ($city['weather']['0']['main']) {
+                            case 'Clear':
+                                $array[$city['id']]['weather'] = 'Ясно';
+                                break;
+                            case 'Clouds':
+                                $array[$city['id']]['weather'] = 'Облачно';
+                                break;
+                            case 'Rain':
+                                $array[$city['id']]['weather'] = 'Дождь';
+                                break;
+                        }
+
+        }
         return $array;
+
+
     }
 }

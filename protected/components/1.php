@@ -57,14 +57,14 @@ $qwe = new weather();
 $data = $qwe->getData('weather');
 
 foreach ($data as $value) {
-    echo $value['name'] . ' ' .
-         $value['temp'] . ' ' .
-         $value['speed'] . ' ' .
-         $value['coord_lon']  . ' ' .
-         $value['coord_lat'] . ' ' .
-         $value['humidity'] . ' ' .
-         $value['pressure'] . ' ' .
-         $value['deg'] . ' ' .
+    echo $value['name'].'<br>'.
+         $value['temp'] .'<br>'.
+         $value['speed'] .'<br>'.
+         $value['coord_lon'] .'<br>'.
+         $value['coord_lat'] .'<br>'.
+         $value['humidity'] .'<br>'.
+         $value['pressure'] .'<br>'.
+         $value['deg'] .'<br>'.
          $value['weather'].'<br>';
 }
 
