@@ -116,6 +116,13 @@ class Parser_OpenWeathermap
                 'weather' => $city['weather']['0']['main']
             ];
 
+            $degs = [
+                0 => 'север'
+            ];
+
+            $index = ceil($city['wind']['deg'] / 22.5);
+            $array[$city['id']]['deg'] = $degs[$index];
+
                         if ($city['wind']['deg'] <= 22.5 || $city['wind']['deg'] > 337.5) {
                             $array[$city['id']]['deg'] = 'северный';
                         }
