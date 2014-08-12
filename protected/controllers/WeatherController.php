@@ -28,7 +28,7 @@ class WeatherController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'list'),
+				'actions'=>array('index','view', 'list', 'city'),
 				'users'=>array('*'),
 			),
 //			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -120,14 +120,53 @@ class WeatherController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
+	public function actionIndex(array $args)
 	{
         header('Content-Type: application/json');
         $weather = Weather::model()->findAll();
         $json = JSON::encode($weather);
         echo $json;
-
 	}
+
+    public function actionFind($city=null, $lat=null, $lon=null, $lon_top=null, $lat_top=null, $lon_bottom=null, $lat_bottom=null)
+    {
+        header('Content-Type: application/json');
+        if(isset($city)) {
+            $weather = Yii::app()->db->createCommand()
+                ->select('date_forecast, temp, humidity, pressure, wind_speed, wind_deg, longitude, latitude')
+                ->from('weather w, weatherstation ws, city c')
+                ->where('c.id = ws.city_id and ws.id = w.station_id and c.name_en = :city')
+                ->bindParam(':city', $city, PDO::PARAM_STR)
+                ->queryAll();
+        }
+
+        if(isset($lat) && isset($lon)){
+            $weather_sql = Yii::app()->db->createCommand()
+                ->select('name_ru, date_forecast, temp, humidity, pressure, wind_speed, wind_deg, longitude, latitude')
+                ->from('weather w, weatherstation ws, city c')
+                ->where('c.id = ws.city_id and ws.id = w.station_id and ws.latitude = :lat and ws.longitude = :lon');
+            $weather_sql->bindParam(':lat', $lat, PDO::PARAM_STR);
+            $weather_sql->bindParam(':lon', $lon, PDO::PARAM_STR);
+            $weather = $weather_sql->queryAll();
+        }
+
+        if(isset($lon_top) && isset($lat_top) && isset($lon_bottom) && isset($lat_bottom)){
+            $weather = array();
+            $allWeather = Weather::model()->findAll();
+
+            foreach($allWeather as $val){
+                if($lon_top > $val->station->longitude && $lat_top > $val->station->latitude and
+                $lon_bottom > $val->station->longitude && $lat_bottom > $val->station->latitude){
+                    $weather[] = $val;
+                }
+            }
+        }
+
+        $json = JSON::encode($weather);
+        echo $json;
+    }
+
+
 
     public function actionList()
     {
