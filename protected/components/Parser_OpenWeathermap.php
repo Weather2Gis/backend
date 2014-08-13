@@ -1,73 +1,60 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: man
+ * Date: 13.08.2014
+ * Time: 17:27
+ */
 
-class ValueObject
-{
-    protected $name;        //наименование города
-    protected $temp;        //температура
-    protected $speed;       //скорость ветра
-    protected $humidity;    //влажность
-    protected $pressure;   //давление
-    protected $deg;         //направление ветра
-    protected $weather;     //состояние
-
-    public function __construct(array $data)
+class Parser_OpenWeathermap {
+    public static function parse($citys)
     {
-        $this->name      = $data['name'];
-        $this->temp      = $data['temp'];
-        $this->speed     = $data['speed'];
-        $this->humidity  = $data['humidity'];
-        $this->pressure  = $data['pressure'];
-        $this->deg       = $data['deg'];
-        $this->weather   = $data['weather'];
+        $map_weather = [
+            'Clear' => 3,
+            'Clouds' => 1,
+            'Rain' => 2];
+
+        $degs = [
+            0 => 1, 15 => 1, 16 => 1,
+            1 => 2, 2 => 2,
+            3 => 3, 4 => 3,
+            5 => 4, 6 => 4,
+            7 => 5, 8 => 5,
+            9 => 6, 10 => 6,
+            11 => 7, 12 => 7,
+            13 => 8, 14 => 8
+        ];
+
+        foreach ($citys as $city) {
+            //if ($city->name_en == "Moscow") {
+            $url = "http://api.openweathermap.org/data/2.5/forecast?q=" . $city->name_en;
+            $json = Parser_OpenWeathermap::getWeatherForCity($url);
+            foreach ($json['list'] as $weather) {
+                $date = explode(" ", $weather['dt_txt'])[0];
+                $array[$city->id][$date] = [
+                    'name' => $json['city']['name'],
+                    'temp' => $weather['main']['temp'],
+                    'speed' => $weather['wind']['speed'],
+                    'humidity' => $weather['main']['humidity'],
+                    'pressure' => $weather['main']['pressure'],
+                    'deg' => $weather['wind']['deg'],
+                    'weather' => $weather['weather']['0']['main']
+                ];
+
+                $array[$city->id][$date]['weather'] = strtr($array[$city->id][$date]['weather'] , $map_weather).'  ';
+                $array[$city->id][$date]['pressure']= ceil($array[$city->id][$date]['pressure'] * 0.75);
+                $array[$city->id][$date]['temp']= ceil($array[$city->id][$date]['temp']);
+
+                $index = ceil($weather['wind']['deg'] / 22.5);
+                $array[$city->id][$date]['deg'] = $degs[$index];
+            }
+            //}
+        }
+        print_r($array);
+        //return $array;
     }
 
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    public function getTemp()
-    {
-        return $this->temp;
-    }
-
-    public function getSpeed()
-    {
-        return $this->speed;
-    }
-
-    public function getHumidity()
-    {
-        return $this->humidity;
-    }
-
-    public function getPressure()
-    {
-        return $this->pressure;
-    }
-
-    public function getDeg()
-    {
-        return $this->deg;
-    }
-
-    public function getWeather()
-    {
-        return $this->weather;
-    }
-}
-
-
-
-class Parser_OpenWeathermap
-{
-
-    public function parse()
-    {
-
-        //$url = api.resourse.param;
-        $url = "api.openweathermap.org/data/2.5/box/city?bbox=16,75,179,40,1000&cluster=no";
-
+    private static function getWeatherForCity($url){
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -87,43 +74,7 @@ class Parser_OpenWeathermap
 
         if (empty($json['list']))
             return null;
-        //print_r($json);
-        $map_weather =[
-            'Clear'  =>3,
-            'Clouds' =>1,
-            'Rain'   =>2];
 
-        $degs = [
-            0  => 1, 15  => 1, 16 => 1,
-            1  => 2, 2   => 2,
-            3  => 3, 4   => 3,
-            5  => 4, 6   => 4,
-            7  => 5, 8   => 5,
-            9  => 6, 10  => 6,
-            11 => 7, 12  => 7,
-            13 => 8, 14  => 8
-        ];
-
-        foreach ($json['list'] as $city) {
-            $array[$city['id']] = [
-                'name' => $city['name'],
-                'temp' => $city['main']['temp'],
-                'speed' => $city['wind']['speed'],
-                'humidity' => $city['main']['humidity'],
-                'pressure' => $city['main']['pressure'],
-                'deg' => $city['wind']['deg'],
-                'weather' => $city['weather']['0']['main']
-            ];
-
-            $array[$city['id']]['weather'] = strtr($array[$city['id']]['weather'] , $map_weather).'  ';
-            $array[$city['id']]['pressure']= ceil($array[$city['id']]['pressure'] * 0.75);
-            $array[$city['id']]['temp']= ceil($array[$city['id']]['temp']);
-
-            $index = ceil($city['wind']['deg'] / 22.5);
-            $array[$city['id']]['deg'] = $degs[$index];
-
-        }
-
-        return $array;
+        return $json;
     }
-}
+} 
