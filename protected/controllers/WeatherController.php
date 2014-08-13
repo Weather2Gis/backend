@@ -123,8 +123,8 @@ class WeatherController extends Controller
 	public function actionIndex()
 	{
         echo "<center><h2>Пример запросов</h2>" .
-            "<p>Поиск по городу: <pre>/weather.php?r=weather/find&city=Omsk</pre></p>" .
-            "<p>Поиск по координатам: <pre>/weather.php?r=weather/find&lat=57.933713&lon=55.335629</pre></p>" .
+            "<p>Поиск по городу: <pre>/weather.php?r=weather/find&city=Moscow</pre></p>" .
+            "<p>Поиск по координатам: <pre>/weather.php?r=weather/find&lat=55.753676&lon=37.619899</pre></p>" .
             "<p>Поиск в пределах прямоугольника: <pre>/weather.php?r=weather/find&lon_top=82.560544&lat_top=55.174534&lon_bottom=83.318972&lat_bottom=54.843024</pre></p></center>";
 	}
 
