@@ -133,9 +133,9 @@ class WeatherController extends Controller
         header('Content-Type: application/json');
         if(isset($city)) {
             $weather = Yii::app()->db->createCommand()
-                ->select('date_forecast, temp, humidity, pressure, wind_speed, wind_deg, longitude, latitude')
-                ->from('weather w, weatherstation ws, city c')
-                ->where('c.id = ws.city_id and ws.id = w.station_id and c.name_en = :city')
+                ->select('date_forecast, temp, humidity, pressure, wind_speed, wind_deg, longitude, latitude, p.name')
+                ->from('weather w, weatherstation ws, city c, precipitation p')
+                ->where('c.id = ws.city_id and ws.id = w.station_id and p.id = precipitation_id and c.name_en = :city')
                 ->bindParam(':city', $city, PDO::PARAM_STR)
                 ->queryAll();
         }
