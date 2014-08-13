@@ -1,8 +1,5 @@
 <?php
 
-
-// $parser = new Yandex();
-
 class weather
 {
     public function _construct($parser)
@@ -60,8 +57,6 @@ foreach ($data as $value) {
     echo $value['name'].'<br>'.
          $value['temp'] .'<br>'.
          $value['speed'] .'<br>'.
-         $value['coord_lon'] .'<br>'.
-         $value['coord_lat'] .'<br>'.
          $value['humidity'] .'<br>'.
          $value['pressure'] .'<br>'.
          $value['deg'] .'<br>'.
