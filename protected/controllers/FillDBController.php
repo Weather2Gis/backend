@@ -9,11 +9,11 @@
 class FillDBController extends Controller
 {
     public function actionIndex(){
-        $this.fillYandex();
-        $this.fillOpenWeather();
+        //$this->fillYandex();
+        $this->fillOpenWeather();
     }
 
-    public function fillYandex(){
+    private function fillYandex(){
         $yandex = Parser_Yandex::parse();
         $weather = new Weather();
 
@@ -34,8 +34,8 @@ class FillDBController extends Controller
         }
     }
 
-    public function fillOpenWeather(){
-        $openWeather = Parse_OpenWeathermap::parse();
+    private function fillOpenWeather(){
+        $openWeather = Parser_OpenWeathermap::parse(City::model()->findAll());
         $weather = new Weather();
 
         foreach($openWeather as $city){
