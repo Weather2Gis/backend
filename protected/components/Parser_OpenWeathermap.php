@@ -26,32 +26,33 @@ class Parser_OpenWeathermap {
         ];
 
         foreach ($citys as $city) {
-            //if ($city->name_en == "Moscow") {
-            $url = "http://api.openweathermap.org/data/2.5/forecast?q=" . $city->name_en;
+            $url = "http://api.openweathermap.org/data/2.5/forecast?q=" . $city->id;
             $json = Parser_OpenWeathermap::getWeatherForCity($url);
-            foreach ($json['list'] as $weather) {
-                $date = explode(" ", $weather['dt_txt'])[0];
-                $array[$city->id][$date] = [
-                    'name' => $json['city']['name'],
-                    'temp' => $weather['main']['temp'],
-                    'speed' => $weather['wind']['speed'],
-                    'humidity' => $weather['main']['humidity'],
-                    'pressure' => $weather['main']['pressure'],
-                    'deg' => $weather['wind']['deg'],
-                    'weather' => $weather['weather']['0']['main']
-                ];
+			if (isset($json['list'])){
+				foreach ($json['list'] as $weather) {
+					$date = explode(" ", $weather['dt_txt'])[0];
+					$array[$city->id][$date] = [
+						'name' => $json['city']['name'],
+						'temp' => $weather['main']['temp'],
+						'speed' => $weather['wind']['speed'],
+						'humidity' => $weather['main']['humidity'],
+						'pressure' => $weather['main']['pressure'],
+						'deg' => $weather['wind']['deg'],
+						'weather' => $weather['weather']['0']['main']
+					];
 
-                $array[$city->id][$date]['weather'] = strtr($array[$city->id][$date]['weather'] , $map_weather).'  ';
-                $array[$city->id][$date]['pressure']= ceil($array[$city->id][$date]['pressure'] * 0.75);
-                $array[$city->id][$date]['temp']= ceil($array[$city->id][$date]['temp']);
+					$array[$city->id][$date]['weather'] = strtr($array[$city->id][$date]['weather'] , $map_weather).'  ';
+					$array[$city->id][$date]['pressure']= ceil($array[$city->id][$date]['pressure'] * 0.75);
+					$array[$city->id][$date]['temp']= ceil($array[$city->id][$date]['temp']);
 
-                $index = ceil($weather['wind']['deg'] / 22.5);
-                $array[$city->id][$date]['deg'] = $degs[$index];
-            }
-            //}
+					$index = ceil($weather['wind']['deg'] / 22.5);
+					$array[$city->id][$date]['deg'] = $degs[$index];
+				}
+				print_r($array[$city->id]);
+				echo "<br>";
+			}
         }
-        print_r($array);
-        //return $array;
+        return $array;
     }
 
     private static function getWeatherForCity($url){
