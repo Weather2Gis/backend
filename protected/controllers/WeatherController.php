@@ -130,7 +130,9 @@ class WeatherController extends Controller
 
     public function actionFind()
     {
-        //$city=null, $lat=null, $lon=null, $lon_top=null, $lat_top=null, $lon_bottom=null, $lat_bottom=null
+		header('Content-Type: application/json');
+		$pr = ["ya" => 1, "owm" => 2,]; //Провайдер
+	
         $city = Yii::app()->request->getQuery('city');
         $lat = Yii::app()->request->getQuery('lat');
         $lon = Yii::app()->request->getQuery('lon');
@@ -138,45 +140,103 @@ class WeatherController extends Controller
         $lat_top = Yii::app()->request->getQuery('lat_top');
         $lon_bottom = Yii::app()->request->getQuery('lon_bottom');
         $lat_bottom = Yii::app()->request->getQuery('lat_bottom');
-
-        header('Content-Type: application/json');
+		$provider = Yii::app()->request->getQuery('pr', "owm");
+		$provider = strtr($provider, $pr);
+		$today = date("Y-m-d");
+        
         if(isset($city)) {
-            $weather = Yii::app()->db->createCommand()
-                ->select('name_ru, date_forecast, temp, humidity, pressure, wind_speed, wind_deg, longitude, latitude, p.name, pr.name')
-                ->from('weather w, weatherstation ws, city c, precipitation p, provider pr, wind_deg wd')
-                ->where('c.id = ws.city_id and ws.id = w.station_id and p.id = precipitation_id and w.wind_deg = wd.id
-                                    and pr.id = provider_id and c.name_en = :city')
-                ->order('date_forecast')
-                ->bindParam(':city', $city, PDO::PARAM_STR)
-                ->queryAll();
+			$sql = "SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
+					FROM weather w, weatherstation ws, city c, precipitation p, provider pr, wind_deg wd
+					WHERE c.id = ws.city_id and ws.id = w.station_id and p.id = precipitation_id and w.wind_deg = wd.id 
+					and pr.id = provider_id and c.name_en = :city and date_forecast = :today and provider_id = :provider and partofday = 2
+					ORDER BY date_forecast";
+			
+			$city = mb_convert_case($city, MB_CASE_TITLE, "UTF-8");
+			$weather = Yii::app()->db->createCommand($sql)
+						->bindParam(':city', $city, PDO::PARAM_STR)
+						->bindParam(':provider', $provider, PDO::PARAM_STR)
+						->bindParam(':today', $today, PDO::PARAM_STR)
+						->queryAll();
+        }
+
+        if(isset($lat) && isset($lon)){
+			$sql = "SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
+					FROM weather w, weatherstation ws, city c, precipitation p, provider pr, wind_deg wd
+					WHERE c.id = ws.city_id and ws.id = w.station_id and p.id = precipitation_id and w.wind_deg = wd.id 
+					and ws.latitude = :lat and ws.longitude = :lon and date_forecast = :today 
+					and provider_id = :provider and partofday = 2
+					ORDER BY date_forecast";
+			$weather = Yii::app()->db->createCommand($sql)
+						->bindParam(':lat', $lat, PDO::PARAM_STR)
+						->bindParam(':lon', $lon, PDO::PARAM_STR)
+						->bindParam(':provider', $provider, PDO::PARAM_STR)
+						->bindParam(':today', $today, PDO::PARAM_STR)
+						->queryAll();
+        }
+
+        if(isset($lon_top) && isset($lat_top) && isset($lon_bottom) && isset($lat_bottom)){
+			$sql = "SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
+					FROM city c, (((weather w
+					INNER JOIN weatherstation ws ON ws.id = station_id and date_forecast = :today and partofday = 2 and provider_id = :provider)
+					INNER JOIN precipitation p ON p.id = precipitation_id)
+					INNER JOIN wind_deg wd ON w.wind_deg = wd.id)
+					INNER JOIN provider pr ON pr.id = provider_id
+					WHERE ws.city_id = c.id IN (SELECT city_id
+						FROM weatherstation
+						WHERE longitude >= :lon_top and longitude <= :lon_bottom and latitude <= :lat_top and latitude >= :lat_bottom)";
+			$weather = Yii::app()->db->createCommand($sql)
+					->bindParam(':provider', $provider, PDO::PARAM_STR)
+					->bindParam(':today', $today, PDO::PARAM_STR)
+					->bindParam(':lon_top', $lon_top, PDO::PARAM_STR)
+					->bindParam(':lat_top', $lat_top, PDO::PARAM_STR)
+					->bindParam(':lon_bottom', $lon_bottom, PDO::PARAM_STR)
+					->bindParam(':lat_bottom', $lat_bottom, PDO::PARAM_STR)				
+					->queryAll();
+        }
+
+        $json = JSON::encode($weather);
+        printf("callback(%s)", $json);
+    }
+	
+	public function actionForecast(){
+		header('Content-Type: application/json');
+		$pr = ["ya" => 1, "owm" => 2,]; //Провайдер
+		$city = Yii::app()->request->getQuery('city');
+        $lat = Yii::app()->request->getQuery('lat');
+        $lon = Yii::app()->request->getQuery('lon');
+		$provider = Yii::app()->request->getQuery('pr', "owm");
+		$provider = strtr($provider, $pr);
+		$today = date("Y-m-d");
+		
+		if(isset($city)) {
+			$sql = "SELECT name_ru, date_forecast, partofday, temp, humidity, pressure, wind_speed, wind_deg, longitude, latitude, p.name, pr.name
+					FROM weather w, weatherstation ws, city c, precipitation p, provider pr, wind_deg wd
+					WHERE c.id = ws.city_id and ws.id = w.station_id and p.id = precipitation_id and w.wind_deg = wd.id 
+					and pr.id = provider_id and c.name_en = :city and provider_id = :provider
+					ORDER BY date_forecast";
+			
+			$city = mb_convert_case($city, MB_CASE_TITLE, "UTF-8");
+			$weather = Yii::app()->db->createCommand($sql)
+						->bindParam(':city', $city, PDO::PARAM_STR)
+						->bindParam(':provider', $provider, PDO::PARAM_STR)
+						->queryAll();
         }
 
         if(isset($lat) && isset($lon)){
             $weather_sql = Yii::app()->db->createCommand()
                 ->select('name_ru, date_forecast, temp, humidity, pressure, wind_speed, wind_deg, longitude, latitude')
                 ->from('weather w, weatherstation ws, city c')
-                ->where('c.id = ws.city_id and ws.id = w.station_id and ws.latitude = :lat and ws.longitude = :lon');
+                ->where('c.id = ws.city_id and ws.id = w.station_id and ws.latitude = :lat and ws.longitude = :lon and provider_id = :provider');
             $weather_sql->bindParam(':lat', $lat, PDO::PARAM_STR);
             $weather_sql->bindParam(':lon', $lon, PDO::PARAM_STR);
+			$weather_sql->bindParam(':provider', $provider, PDO::PARAM_STR);
             $weather = $weather_sql->queryAll();
-        }
+        }	
 
-        if(isset($lon_top) && isset($lat_top) && isset($lon_bottom) && isset($lat_bottom)){
-            $allWeather = Weatherstation::model()->findAll();
-            foreach($allWeather as $val){
-                if($lon_top < $val->longitude && $lat_top > $val->latitude and
-                    $lon_bottom > $val->longitude && $lat_bottom < $val->latitude){
-                        $weather[] = $val;
-                }
-            }
-        }
-
-        $json = JSON::encode($weather);
-        printf("callback(%s)", $json);
-    }
-
-
-
+		$json = JSON::encode($weather);
+        printf("callback(%s)", $json);		
+	}
+	
     public function actionList()
     {
         $dataProvider=new CActiveDataProvider('Weather');
