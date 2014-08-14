@@ -128,8 +128,17 @@ class WeatherController extends Controller
             "<p>Поиск в пределах прямоугольника: <pre>/weather.php?r=weather/find&lon_top=82.560544&lat_top=55.174534&lon_bottom=83.318972&lat_bottom=54.843024</pre></p></center>";
 	}
 
-    public function actionFind($city=null, $lat=null, $lon=null, $lon_top=null, $lat_top=null, $lon_bottom=null, $lat_bottom=null)
+    public function actionFind()
     {
+        //$city=null, $lat=null, $lon=null, $lon_top=null, $lat_top=null, $lon_bottom=null, $lat_bottom=null
+        $city = Yii::app()->request->getQuery('city');
+        $lat = Yii::app()->request->getQuery('lat');
+        $lon = Yii::app()->request->getQuery('lon');
+        $lon_top = Yii::app()->request->getQuery('lon_top');
+        $lat_top = Yii::app()->request->getQuery('lat_top');
+        $lon_bottom = Yii::app()->request->getQuery('lon_bottom');
+        $lat_bottom = Yii::app()->request->getQuery('lat_bottom');
+
         header('Content-Type: application/json');
         if(isset($city)) {
             $weather = Yii::app()->db->createCommand()
