@@ -34,14 +34,14 @@ class FillDBController extends Controller
         }
     }
 
-    private function fillOpenWeather(){
-        $openWeather = Parser_OpenWeathermap::parse(City::model()->findAll());
+    private function fillOpenWeather(){      
         $weather = new Weather();
-
-        foreach($openWeather as $city){
-            foreach($city as $date=>$main){
-                $city_id = City::model()->findAllByAttributes(array('name_ru'=>$main['name']))->id;
-                $station_id = City::model()->findAllByAttributes(array('city_id'=>$city_id));
+		$citys = City::model()->findAll();
+		
+        foreach($citys as $city){
+			$openWeather = Parser_OpenWeathermap::parse($city);
+            foreach($openWeather as $date=>$main){
+                $station_id = City::model()->findAllByAttributes(array('city_id'=>$city->id));
                 $weather->date_forecast = $date;
                 $weather->temp=$main['temp'];
                 $weather->humidity=$main['humidity'];
