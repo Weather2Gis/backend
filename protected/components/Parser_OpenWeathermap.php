@@ -9,6 +9,9 @@
 class Parser_OpenWeathermap {
     public static function parse($city)
     {
+        //list : утро, день, вечер, ночь
+        $list = ["09:00:00" => 1, "15:00:00" => 2, "21:00:00" => 3, "03:00:00" => 4];
+
         $map_weather = [
             'Clear' => 3,
             'Clouds' => 1,
@@ -25,30 +28,36 @@ class Parser_OpenWeathermap {
             13 => 8, 14 => 8
         ];
 
-		$url = "http://api.openweathermap.org/data/2.5/forecast?q=" . $city->name_en;
+		$url = "http://api.openweathermap.org/data/2.5/forecast?q=" . $city->name_en . "&units=metric";
 		$json = Parser_OpenWeathermap::getWeatherForCity($url);
-		if (isset($json['list'])){
-			foreach ($json['list'] as $weather) {
-				$date = explode(" ", $weather['dt_txt'])[0];
-				$array[$date] = [
-					'name' => $json['city']['name'],
-					'temp' => $weather['main']['temp'],
-					'speed' => $weather['wind']['speed'],
-					'humidity' => $weather['main']['humidity'],
-					'pressure' => $weather['main']['pressure'],
-					'deg' => $weather['wind']['deg'],
-					'weather' => $weather['weather']['0']['main']
-				];
-
-				$array[$date]['weather'] = strtr($array[$date]['weather'] , $map_weather).'  ';
-				$array[$date]['pressure']= ceil($array[$date]['pressure'] * 0.75);
-				$array[$date]['temp']= ceil($array[$date]['temp']);
-
-				$index = ceil($weather['wind']['deg'] / 22.5);
-				$array[$date]['deg'] = $degs[$index];
-			}
-		}
-			
+        if(!empty($json)){
+            if(!empty($json['list'])){
+                foreach($json['list'] as $time){
+                    if(!empty($time)){
+                        $date = explode(" ", $time['dt_txt'])[0];
+                        $partofday = explode(" ", $time['dt_txt'])[1];
+                        if(array_key_exists($partofday, $list)){
+                            $array[] = [
+                                'date_forecast' => $date,
+                                'partofday' => $list[$partofday],
+                                'temp' => ceil($time['main']['temp']),
+                                'wind_speed' => $time['wind']['speed'],
+                                'wind_deg' => $degs[ceil($time['wind']['deg'] / 22.5)],
+                                'humidity' => $time['main']['humidity'],
+                                'pressure' => ceil($time['main']['pressure'] * 0.75),
+                                'precipitation_id' => (int)strtr($time['weather']['0']['main'] , $map_weather)
+                            ];
+                        }
+                    }else{
+                        return null;
+                    }
+                }
+            }else{
+                return null;
+            }
+        }else{
+            return null;
+        }
         return $array;
     }
 
@@ -70,7 +79,7 @@ class Parser_OpenWeathermap {
 
         $json = json_decode($result, true);
 
-        if (empty($json['list']))
+        if (empty($json))
             return null;
 
         return $json;

@@ -35,7 +35,7 @@ class weather
     {
         switch ($parser) {
             case 'weather':
-                include 'Parser_OpenWeathermap.php';
+                include 'Parser_OpenWeathermap1.php';
                 $parser = new Parser_OpenWeathermap();
                 break;
             
