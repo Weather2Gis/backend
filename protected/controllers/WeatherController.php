@@ -142,9 +142,11 @@ class WeatherController extends Controller
         header('Content-Type: application/json');
         if(isset($city)) {
             $weather = Yii::app()->db->createCommand()
-                ->select('date_forecast, temp, humidity, pressure, wind_speed, wind_deg, longitude, latitude, p.name')
-                ->from('weather w, weatherstation ws, city c, precipitation p')
-                ->where('c.id = ws.city_id and ws.id = w.station_id and p.id = precipitation_id and c.name_en = :city')
+                ->select('name_ru, date_forecast, temp, humidity, pressure, wind_speed, wind_deg, longitude, latitude, p.name, pr.name')
+                ->from('weather w, weatherstation ws, city c, precipitation p, provider pr, wind_deg wd')
+                ->where('c.id = ws.city_id and ws.id = w.station_id and p.id = precipitation_id and w.wind_deg = wd.id
+                                    and pr.id = provider_id and c.name_en = :city')
+                ->order('date_forecast')
                 ->bindParam(':city', $city, PDO::PARAM_STR)
                 ->queryAll();
         }
@@ -160,19 +162,17 @@ class WeatherController extends Controller
         }
 
         if(isset($lon_top) && isset($lat_top) && isset($lon_bottom) && isset($lat_bottom)){
-            $weather = array();
-            $allWeather = Weather::model()->findAll();
-
+            $allWeather = Weatherstation::model()->findAll();
             foreach($allWeather as $val){
-                if($lon_top > $val->station->longitude && $lat_top > $val->station->latitude and
-                $lon_bottom > $val->station->longitude && $lat_bottom > $val->station->latitude){
-                    $weather[] = $val;
+                if($lon_top < $val->longitude && $lat_top > $val->latitude and
+                    $lon_bottom > $val->longitude && $lat_bottom < $val->latitude){
+                        $weather[] = $val;
                 }
             }
         }
 
         $json = JSON::encode($weather);
-        echo $json;
+        printf("callback(%s)", $json);
     }
 
 

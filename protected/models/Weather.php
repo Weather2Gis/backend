@@ -43,6 +43,7 @@ class Weather extends CActiveRecord
 			array('date_forecast, temp, humidity, pressure, wind_speed, wind_deg, precipitation_id, station_id, provider_id', 'required'),
 			array('partofday, temp, humidity, pressure, wind_deg, precipitation_id, station_id, provider_id', 'numerical', 'integerOnly'=>true),
 			array('wind_speed', 'numerical'),
+            array('wind_deg', 'in', 'range' => [1,2,3,4,5,6,7,8,9]),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, date_forecast, partofday, temp, humidity, pressure, wind_speed, wind_deg, precipitation_id, station_id, provider_id', 'safe', 'on'=>'search'),
