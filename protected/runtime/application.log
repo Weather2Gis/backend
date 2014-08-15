@@ -1001,3 +1001,198 @@ Stack trace:
 #15 {main}
 REQUEST_URI=/weather/?r=weather/find&lon_top=82.560544&lat_top=55.174534&lon_bottom=83.318972&lat_bottom=54.843024
 ---
+2014/08/15 05:02:10 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%'Moscow'% OR c.name_ru LIKE %'Moscow'%) and date_forecast = '2014-08-15' and pr' at line 4. The SQL statement executed was: SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
+					FROM weather w, weatherstation ws, city c, precipitation p, provider pr, wind_deg wd
+					WHERE c.id = ws.city_id and ws.id = w.station_id and p.id = precipitation_id and w.wind_deg = wd.id 
+					and pr.id = provider_id and (c.name_en LIKE %:city% OR c.name_ru LIKE %:city%) and date_forecast = :today and provider_id = :provider and partofday = 2
+					ORDER BY date_forecast.
+in D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php (159)
+in D:\OpenServer\domains\localhost\weather\index.php (13)
+2014/08/15 05:02:10 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%'Moscow'% OR c.name_ru LIKE %'Moscow'%) and date_forecast = '2014-08-15' and pr' at line 4. The SQL statement executed was: SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
+					FROM weather w, weatherstation ws, city c, precipitation p, provider pr, wind_deg wd
+					WHERE c.id = ws.city_id and ws.id = w.station_id and p.id = precipitation_id and w.wind_deg = wd.id 
+					and pr.id = provider_id and (c.name_en LIKE %:city% OR c.name_ru LIKE %:city%) and date_forecast = :today and provider_id = :provider and partofday = 2
+					ORDER BY date_forecast' in D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php:543
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php(159): CDbCommand->queryAll()
+#2 D:\OpenServer\domains\localhost\weather\framework\framework\web\actions\CInlineAction.php(49): WeatherController->actionFind()
+#3 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#6 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#7 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#8 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(291): CFilterChain->run()
+#10 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(282): CController->run('find')
+#12 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('weather/find')
+#13 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#14 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/weather/?r=weather/find&city=Moscow
+---
+2014/08/15 05:04:46 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.id IN (SELECT city_id
+						FROM weatherstation
+						WHERE longitude >= '82.' at line 7. The SQL statement executed was: SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
+					FROM city c, ((((weather w
+					INNER JOIN weatherstation ws ON ws.id = station_id and date_forecast = :today and partofday = 2 and provider_id = :provider)
+					INNER JOIN precipitation p ON p.id = precipitation_id)
+					INNER JOIN wind_deg wd ON w.wind_deg = wd.id)
+					INNER JOIN provider pr ON pr.id = provider_id)
+					INNER JOIN ws.city_id = c.id IN (SELECT city_id
+						FROM weatherstation
+						WHERE longitude >= :lon_top and longitude <= :lon_bottom and latitude <= :lat_top and latitude >= :lat_bottom).
+in D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php (194)
+in D:\OpenServer\domains\localhost\weather\index.php (13)
+2014/08/15 05:04:46 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.id IN (SELECT city_id
+						FROM weatherstation
+						WHERE longitude >= '82.' at line 7. The SQL statement executed was: SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
+					FROM city c, ((((weather w
+					INNER JOIN weatherstation ws ON ws.id = station_id and date_forecast = :today and partofday = 2 and provider_id = :provider)
+					INNER JOIN precipitation p ON p.id = precipitation_id)
+					INNER JOIN wind_deg wd ON w.wind_deg = wd.id)
+					INNER JOIN provider pr ON pr.id = provider_id)
+					INNER JOIN ws.city_id = c.id IN (SELECT city_id
+						FROM weatherstation
+						WHERE longitude >= :lon_top and longitude <= :lon_bottom and latitude <= :lat_top and latitude >= :lat_bottom)' in D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php:543
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php(194): CDbCommand->queryAll()
+#2 D:\OpenServer\domains\localhost\weather\framework\framework\web\actions\CInlineAction.php(49): WeatherController->actionFind()
+#3 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#6 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#7 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#8 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(291): CFilterChain->run()
+#10 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(282): CController->run('find')
+#12 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('weather/find')
+#13 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#14 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/weather/?r=weather/find&lon_top=82.560544&lat_top=55.174534&lon_bottom=83.318972&lat_bottom=54.843024
+---
+2014/08/15 05:05:46 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'c.id' in 'IN/ALL/ANY subquery'. The SQL statement executed was: SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
+					FROM city c, (((weather w
+					INNER JOIN weatherstation ws ON ws.id = station_id and date_forecast = :today and partofday = 2 and provider_id = :provider AND ws.city_id = c.id IN (SELECT city_id
+						FROM weatherstation
+						WHERE longitude >= :lon_top and longitude <= :lon_bottom and latitude <= :lat_top and latitude >= :lat_bottom))
+					INNER JOIN precipitation p ON p.id = precipitation_id)
+					INNER JOIN wind_deg wd ON w.wind_deg = wd.id)
+					INNER JOIN provider pr ON pr.id = provider_id
+					.
+in D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php (194)
+in D:\OpenServer\domains\localhost\weather\index.php (13)
+2014/08/15 05:05:47 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'c.id' in 'IN/ALL/ANY subquery'. The SQL statement executed was: SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
+					FROM city c, (((weather w
+					INNER JOIN weatherstation ws ON ws.id = station_id and date_forecast = :today and partofday = 2 and provider_id = :provider AND ws.city_id = c.id IN (SELECT city_id
+						FROM weatherstation
+						WHERE longitude >= :lon_top and longitude <= :lon_bottom and latitude <= :lat_top and latitude >= :lat_bottom))
+					INNER JOIN precipitation p ON p.id = precipitation_id)
+					INNER JOIN wind_deg wd ON w.wind_deg = wd.id)
+					INNER JOIN provider pr ON pr.id = provider_id
+					' in D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php:543
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php(194): CDbCommand->queryAll()
+#2 D:\OpenServer\domains\localhost\weather\framework\framework\web\actions\CInlineAction.php(49): WeatherController->actionFind()
+#3 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#6 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#7 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#8 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(291): CFilterChain->run()
+#10 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(282): CController->run('find')
+#12 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('weather/find')
+#13 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#14 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/weather/?r=weather/find&lon_top=82.560544&lat_top=55.174534&lon_bottom=83.318972&lat_bottom=54.843024
+---
+2014/08/15 05:06:40 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'city.id' in 'IN/ALL/ANY subquery'. The SQL statement executed was: SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
+					FROM city c, (((weather w
+					INNER JOIN weatherstation ws ON ws.id = station_id and date_forecast = :today and partofday = 2 and provider_id = :provider AND ws.city_id = city.id IN (SELECT city_id
+						FROM weatherstation
+						WHERE longitude >= :lon_top and longitude <= :lon_bottom and latitude <= :lat_top and latitude >= :lat_bottom))
+					INNER JOIN precipitation p ON p.id = precipitation_id)
+					INNER JOIN wind_deg wd ON w.wind_deg = wd.id)
+					INNER JOIN provider pr ON pr.id = provider_id
+					.
+in D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php (194)
+in D:\OpenServer\domains\localhost\weather\index.php (13)
+2014/08/15 05:06:40 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'city.id' in 'IN/ALL/ANY subquery'. The SQL statement executed was: SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
+					FROM city c, (((weather w
+					INNER JOIN weatherstation ws ON ws.id = station_id and date_forecast = :today and partofday = 2 and provider_id = :provider AND ws.city_id = city.id IN (SELECT city_id
+						FROM weatherstation
+						WHERE longitude >= :lon_top and longitude <= :lon_bottom and latitude <= :lat_top and latitude >= :lat_bottom))
+					INNER JOIN precipitation p ON p.id = precipitation_id)
+					INNER JOIN wind_deg wd ON w.wind_deg = wd.id)
+					INNER JOIN provider pr ON pr.id = provider_id
+					' in D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php:543
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php(194): CDbCommand->queryAll()
+#2 D:\OpenServer\domains\localhost\weather\framework\framework\web\actions\CInlineAction.php(49): WeatherController->actionFind()
+#3 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#6 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#7 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#8 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(291): CFilterChain->run()
+#10 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(282): CController->run('find')
+#12 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('weather/find')
+#13 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#14 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/weather/?r=weather/find&lon_top=82.560544&lat_top=55.174534&lon_bottom=83.318972&lat_bottom=54.843024
+---
+2014/08/15 05:08:05 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'city.id' in 'IN/ALL/ANY subquery'. The SQL statement executed was: SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
+					FROM city c INNER JOIN ((((weather w
+					INNER JOIN weatherstation ws ON ws.id = station_id and date_forecast = :today and partofday = 2 and provider_id = :provider)
+					INNER JOIN precipitation p ON p.id = precipitation_id)
+					INNER JOIN wind_deg wd ON w.wind_deg = wd.id)
+					INNER JOIN provider pr ON pr.id = provider_id) ON
+					ws.city_id = city.id IN (SELECT city_id
+						FROM weatherstation
+						WHERE longitude >= :lon_top and longitude <= :lon_bottom and latitude <= :lat_top and latitude >= :lat_bottom)
+					
+					.
+in D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php (196)
+in D:\OpenServer\domains\localhost\weather\index.php (13)
+2014/08/15 05:08:05 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'city.id' in 'IN/ALL/ANY subquery'. The SQL statement executed was: SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
+					FROM city c INNER JOIN ((((weather w
+					INNER JOIN weatherstation ws ON ws.id = station_id and date_forecast = :today and partofday = 2 and provider_id = :provider)
+					INNER JOIN precipitation p ON p.id = precipitation_id)
+					INNER JOIN wind_deg wd ON w.wind_deg = wd.id)
+					INNER JOIN provider pr ON pr.id = provider_id) ON
+					ws.city_id = city.id IN (SELECT city_id
+						FROM weatherstation
+						WHERE longitude >= :lon_top and longitude <= :lon_bottom and latitude <= :lat_top and latitude >= :lat_bottom)
+					
+					' in D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php:543
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php(196): CDbCommand->queryAll()
+#2 D:\OpenServer\domains\localhost\weather\framework\framework\web\actions\CInlineAction.php(49): WeatherController->actionFind()
+#3 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#6 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#7 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#8 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(291): CFilterChain->run()
+#10 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(282): CController->run('find')
+#12 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('weather/find')
+#13 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#14 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/weather/?r=weather/find&lon_top=82.560544&lat_top=55.174534&lon_bottom=83.318972&lat_bottom=54.843024
+---

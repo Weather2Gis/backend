@@ -148,7 +148,7 @@ class WeatherController extends Controller
 			$sql = "SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
 					FROM weather w, weatherstation ws, city c, precipitation p, provider pr, wind_deg wd
 					WHERE c.id = ws.city_id and ws.id = w.station_id and p.id = precipitation_id and w.wind_deg = wd.id 
-					and pr.id = provider_id and c.name_en = :city and date_forecast = :today and provider_id = :provider and partofday = 2
+					and pr.id = provider_id and (c.name_en LIKE :city OR c.name_ru LIKE :city) and date_forecast = :today and provider_id = :provider and partofday = 2
 					ORDER BY date_forecast";
 			
 			$city = mb_convert_case($city, MB_CASE_TITLE, "UTF-8");
@@ -176,14 +176,16 @@ class WeatherController extends Controller
 
         if(isset($lon_top) && isset($lat_top) && isset($lon_bottom) && isset($lat_bottom)){
 			$sql = "SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
-					FROM city c, (((weather w
+					FROM city c INNER JOIN ((((weather w
 					INNER JOIN weatherstation ws ON ws.id = station_id and date_forecast = :today and partofday = 2 and provider_id = :provider)
 					INNER JOIN precipitation p ON p.id = precipitation_id)
 					INNER JOIN wind_deg wd ON w.wind_deg = wd.id)
-					INNER JOIN provider pr ON pr.id = provider_id
-					WHERE ws.city_id = c.id IN (SELECT city_id
+					INNER JOIN provider pr ON pr.id = provider_id) ON
+					ws.city_id = c.id IN (SELECT city_id
 						FROM weatherstation
-						WHERE longitude >= :lon_top and longitude <= :lon_bottom and latitude <= :lat_top and latitude >= :lat_bottom)";
+						WHERE longitude >= :lon_top and longitude <= :lon_bottom and latitude <= :lat_top and latitude >= :lat_bottom)
+					
+					";
 			$weather = Yii::app()->db->createCommand($sql)
 					->bindParam(':provider', $provider, PDO::PARAM_STR)
 					->bindParam(':today', $today, PDO::PARAM_STR)
