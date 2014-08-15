@@ -122,16 +122,16 @@ class WeatherController extends Controller
 	 */
 	public function actionIndex()
 	{
-        echo "<center><h2>Пример запросов</h2>" .
+        echo "<center><h2>Пример запросов на один день (обед)</h2>" .
             "<p>Поиск по городу: <pre>/weather.php?r=weather/find&city=Moscow</pre></p>" .
             "<p>Поиск по координатам: <pre>/weather.php?r=weather/find&lat=55.753676&lon=37.619899</pre></p>" .
             "<p>Поиск в пределах прямоугольника: <pre>/weather.php?r=weather/find&lon_top=82.560544&lat_top=55.174534&lon_bottom=83.318972&lat_bottom=54.843024</pre></p></center>";
-	}
+    }
 
     public function actionFind()
     {
-		header('Content-Type: application/json');
-		$pr = ["ya" => 1, "owm" => 2,]; //Провайдер
+
+		$pr = ["ya" => 1, "owm" => 2]; //Провайдер
 	
         $city = Yii::app()->request->getQuery('city');
         $lat = Yii::app()->request->getQuery('lat');
@@ -140,7 +140,7 @@ class WeatherController extends Controller
         $lat_top = Yii::app()->request->getQuery('lat_top');
         $lon_bottom = Yii::app()->request->getQuery('lon_bottom');
         $lat_bottom = Yii::app()->request->getQuery('lat_bottom');
-		$provider = Yii::app()->request->getQuery('pr', "owm");
+		$provider = Yii::app()->request->getQuery('pr', "ya");
 		$provider = strtr($provider, $pr);
 		$today = date("Y-m-d");
         
@@ -157,9 +157,7 @@ class WeatherController extends Controller
 						->bindParam(':provider', $provider, PDO::PARAM_STR)
 						->bindParam(':today', $today, PDO::PARAM_STR)
 						->queryAll();
-        }
-
-        if(isset($lat) && isset($lon)){
+        }else if(isset($lat) && isset($lon)){
 			$sql = "SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
 					FROM weather w, weatherstation ws, city c, precipitation p, provider pr, wind_deg wd
 					WHERE c.id = ws.city_id and ws.id = w.station_id and p.id = precipitation_id and w.wind_deg = wd.id 
@@ -172,9 +170,8 @@ class WeatherController extends Controller
 						->bindParam(':provider', $provider, PDO::PARAM_STR)
 						->bindParam(':today', $today, PDO::PARAM_STR)
 						->queryAll();
-        }
-
-        if(isset($lon_top) && isset($lat_top) && isset($lon_bottom) && isset($lat_bottom)){
+        }else if(isset($lon_top) && isset($lat_top) && isset($lon_bottom) && isset($lat_bottom)){
+            //SELECT id FROM weatherstation WHERE longitude >= :lon_top AND longitude <= :lon_bottom AND latitude <= :lat_top AND latitude >= :lat_bottom)
 			$sql = "SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
                     FROM weatherstation ws
                     LEFT JOIN city c ON c.id = ws.city_id
@@ -182,18 +179,22 @@ class WeatherController extends Controller
                     LEFT JOIN provider pr ON w.provider_id = pr.id
                     LEFT JOIN wind_deg wd ON w.wind_deg = wd.id
                     LEFT JOIN precipitation p ON w.precipitation_id = p.id
-                    WHERE ws.id IN (SELECT id FROM weatherstation WHERE longitude >= :lon_top AND longitude <= :lon_bottom AND latitude <= :lat_top AND latitude >= :lat_bottom) AND
-                    date_forecast = :today AND partofday = 2 AND w.provider_id = :provider";
-			$weather = Yii::app()->db->createCommand($sql)
+                    WHERE ws.id IN (SELECT id FROM weatherstation
+                                    WHERE Contains(GeomFromText('Polygon(($lat_top $lon_top, $lat_top $lon_bottom, $lat_bottom $lon_bottom,$lat_top $lon_bottom, $lat_top $lon_top))'), point))
+                    AND date_forecast = :today AND partofday = 2 AND w.provider_id = :provider";
+
+            $weather = Yii::app()->db->createCommand($sql)
 					->bindParam(':provider', $provider, PDO::PARAM_STR)
 					->bindParam(':today', $today, PDO::PARAM_STR)
-					->bindParam(':lon_top', $lon_top, PDO::PARAM_STR)
-					->bindParam(':lat_top', $lat_top, PDO::PARAM_STR)
-					->bindParam(':lon_bottom', $lon_bottom, PDO::PARAM_STR)
-					->bindParam(':lat_bottom', $lat_bottom, PDO::PARAM_STR)				
+//					->bindParam(':lon_top', $lon_top, PDO::PARAM_STR)
+//					->bindParam(':lat_top', $lat_top, PDO::PARAM_STR)
+//					->bindParam(':lon_bottom', $lon_bottom, PDO::PARAM_STR)
+//					->bindParam(':lat_bottom', $lat_bottom, PDO::PARAM_STR)
 					->queryAll();
+        } else{
+            throw new CHttpException(404,'Указанная запись не найдена');
         }
-
+        header('Content-Type: application/json');
         $json = JSON::encode($weather);
         printf("callback(%s)", $json);
     }
