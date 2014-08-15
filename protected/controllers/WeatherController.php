@@ -176,16 +176,14 @@ class WeatherController extends Controller
 
         if(isset($lon_top) && isset($lat_top) && isset($lon_bottom) && isset($lat_bottom)){
 			$sql = "SELECT name_ru, date_forecast, temp, humidity, pressure, wind_speed, wd.description, longitude, latitude, p.name, pr.name
-					FROM city c INNER JOIN ((((weather w
-					INNER JOIN weatherstation ws ON ws.id = station_id and date_forecast = :today and partofday = 2 and provider_id = :provider)
-					INNER JOIN precipitation p ON p.id = precipitation_id)
-					INNER JOIN wind_deg wd ON w.wind_deg = wd.id)
-					INNER JOIN provider pr ON pr.id = provider_id) ON
-					ws.city_id = c.id IN (SELECT city_id
-						FROM weatherstation
-						WHERE longitude >= :lon_top and longitude <= :lon_bottom and latitude <= :lat_top and latitude >= :lat_bottom)
-					
-					";
+                    FROM weatherstation ws
+                    LEFT JOIN city c ON c.id = ws.city_id
+                    LEFT JOIN weather w ON w.station_id = ws.id
+                    LEFT JOIN provider pr ON w.provider_id = pr.id
+                    LEFT JOIN wind_deg wd ON w.wind_deg = wd.id
+                    LEFT JOIN precipitation p ON w.precipitation_id = p.id
+                    WHERE ws.id IN (SELECT id FROM weatherstation WHERE longitude >= :lon_top AND longitude <= :lon_bottom AND latitude <= :lat_top AND latitude >= :lat_bottom) AND
+                    date_forecast = :today AND partofday = 2 AND w.provider_id = :provider";
 			$weather = Yii::app()->db->createCommand($sql)
 					->bindParam(':provider', $provider, PDO::PARAM_STR)
 					->bindParam(':today', $today, PDO::PARAM_STR)
