@@ -122,6 +122,8 @@ class WeatherController extends Controller
 	 */
 	public function actionIndex()
 	{
+        Yii::app()->WUParser->run();
+
         echo "<center><h2>Пример запросов</h2>" .
             "<p>Поиск по городу: <pre>/weather.php?r=weather/find&city=Moscow</pre></p>" .
             "<p>Поиск по координатам: <pre>/weather.php?r=weather/find&lat=55.753676&lon=37.619899</pre></p>" .

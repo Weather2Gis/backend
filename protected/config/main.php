@@ -67,6 +67,9 @@ return array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
 		),
+        'WUParser' => [
+          'class' =>  'application.components.WUParser'
+        ],
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(

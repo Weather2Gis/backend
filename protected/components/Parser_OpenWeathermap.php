@@ -84,4 +84,7 @@ class Parser_OpenWeathermap {
 
         return $json;
     }
-} 
+}
+
+
+
