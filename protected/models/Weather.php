@@ -44,7 +44,6 @@ class Weather extends CActiveRecord
 			array('partofday, temp, humidity, pressure, wind_deg, precipitation_id, station_id, provider_id', 'numerical', 'integerOnly'=>true),
 			array('wind_speed', 'numerical'),
             array('wind_deg', 'in', 'range' => [1,2,3,4,5,6,7,8,9]),
-			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, date_forecast, partofday, temp, humidity, pressure, wind_speed, wind_deg, precipitation_id, station_id, provider_id', 'safe', 'on'=>'search'),
 		);
@@ -55,8 +54,6 @@ class Weather extends CActiveRecord
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
 		return array(
 			'precipitation' => array(self::BELONGS_TO, 'Precipitation', 'precipitation_id'),
 			'station' => array(self::BELONGS_TO, 'Weatherstation', 'station_id'),
@@ -72,9 +69,9 @@ class Weather extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'date_forecast' => 'Date Forecast',
-			'partofday' => 'Partofday',
-			'temp' => 'Temp',
+			'date_forecast' => 'Дата',
+			'partofday' => 'Время суток',
+			'temp' => 'Температура',
 			'humidity' => 'Humidity',
 			'pressure' => 'Pressure',
 			'wind_speed' => 'Wind Speed',
@@ -104,16 +101,17 @@ class Weather extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('date_forecast',$this->date_forecast,true);
-		$criteria->compare('partofday',$this->partofday);
-		$criteria->compare('temp',$this->temp);
-		$criteria->compare('humidity',$this->humidity);
-		$criteria->compare('pressure',$this->pressure);
-		$criteria->compare('wind_speed',$this->wind_speed);
-		$criteria->compare('wind_deg',$this->wind_deg);
-		$criteria->compare('precipitation_id',$this->precipitation_id);
-		$criteria->compare('station_id',$this->station_id);
-		$criteria->compare('provider_id',$this->provider_id);
+//		$criteria->compare('date_forecast',$this->date_forecast,true);
+//		$criteria->compare('partofday',$this->partofday);
+//		$criteria->compare('temp',$this->temp);
+//		$criteria->compare('humidity',$this->humidity);
+//		$criteria->compare('pressure',$this->pressure);
+//		$criteria->compare('wind_speed',$this->wind_speed);
+//		$criteria->compare('wind_deg',$this->wind_deg);
+//		$criteria->compare('precipitation_id',$this->precipitation_id);
+//		$criteria->compare('station_id',$this->station_id);
+//		$criteria->compare('provider_id',$this->provider_id);
+//        $criteria->compare('city',$this->station->city->name_en);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -130,4 +128,8 @@ class Weather extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+    public static function findByCity($city){
+
+    }
 }

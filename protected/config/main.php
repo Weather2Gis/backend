@@ -54,7 +54,12 @@ return array(
 		),
         */
 		// uncomment the following to use a MySQL database
-
+        'cache'=>array(
+            'class'=>'system.caching.CDbCache',
+            'cacheTableName' => 'cache',
+            'autoCreateCacheTable' => true,
+            'connectionID' => 'db',
+        ),
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=weather',
 			'emulatePrepare' => true,
