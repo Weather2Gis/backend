@@ -1795,3 +1795,1470 @@ Stack trace:
 #15 {main}
 REQUEST_URI=/weather/?r=weather/forecast&city=Moscow
 ---
+2014/08/17 08:22:24 [error] [php] Missing argument 2 for CDbCommand::bindParam(), called in D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php on line 157 and defined (D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php:245)
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(308): CInlineAction->runWithParams()
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(133): WeatherController->runAction()
+#2 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#3 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#4 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CInlineFilter.php(58): WeatherController->filterAccessControl()
+#5 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(291): CFilterChain->run()
+#7 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(265): WeatherController->runActionWithFilters()
+#8 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(282): WeatherController->run()
+#9 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#10 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#11 D:\OpenServer\domains\localhost\weather\index.php(13): CWebApplication->run()
+REQUEST_URI=/weather/?r=weather/find&city=moscow
+in D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php (157)
+in D:\OpenServer\domains\localhost\weather\index.php (13)
+2014/08/17 08:34:22 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'precipitation.name' in 'field list'. The SQL statement executed was: SELECT name_ru, date_forecast, AVG(temp), AVG(humidity), AVG(pressure), latitude, longitude, precipitation.name, pr.name
+                    FROM weatherstation ws
+                    LEFT JOIN city c ON c.id = ws.city_id
+                    LEFT JOIN weather w ON w.station_id = ws.id
+                    LEFT JOIN provider pr ON w.provider_id = pr.id
+                    LEFT JOIN wind_deg wd ON w.wind_deg = wd.id
+                    LEFT JOIN precipitation p ON w.precipitation_id = p.id
+                    WHERE  (c.name_en LIKE :city OR c.name_ru LIKE :city)
+                    AND date_forecast = :today AND w.provider_id = :provider.
+in D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php (169)
+in D:\OpenServer\domains\localhost\weather\index.php (13)
+2014/08/17 08:34:22 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'precipitation.name' in 'field list'. The SQL statement executed was: SELECT name_ru, date_forecast, AVG(temp), AVG(humidity), AVG(pressure), latitude, longitude, precipitation.name, pr.name
+                    FROM weatherstation ws
+                    LEFT JOIN city c ON c.id = ws.city_id
+                    LEFT JOIN weather w ON w.station_id = ws.id
+                    LEFT JOIN provider pr ON w.provider_id = pr.id
+                    LEFT JOIN wind_deg wd ON w.wind_deg = wd.id
+                    LEFT JOIN precipitation p ON w.precipitation_id = p.id
+                    WHERE  (c.name_en LIKE :city OR c.name_ru LIKE :city)
+                    AND date_forecast = :today AND w.provider_id = :provider' in D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php:543
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php(169): CDbCommand->queryAll()
+#2 D:\OpenServer\domains\localhost\weather\framework\framework\web\actions\CInlineAction.php(49): WeatherController->actionFind()
+#3 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#6 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#7 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#8 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(291): CFilterChain->run()
+#10 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(282): CController->run('find')
+#12 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('weather/find')
+#13 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#14 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/weather/?r=weather/find&city=novosibirsk
+---
+2014/08/17 08:34:52 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'prs.name' in 'field list'. The SQL statement executed was: SELECT name_ru, date_forecast, AVG(temp), AVG(humidity), AVG(pressure), latitude, longitude, p.name, prs.name
+                    FROM weatherstation ws
+                    LEFT JOIN city c ON c.id = ws.city_id
+                    LEFT JOIN weather w ON w.station_id = ws.id
+                    LEFT JOIN provider pr ON w.provider_id = pr.id
+                    LEFT JOIN wind_deg wd ON w.wind_deg = wd.id
+                    LEFT JOIN precipitation p ON w.precipitation_id = p.id
+                    WHERE  (c.name_en LIKE :city OR c.name_ru LIKE :city)
+                    AND date_forecast = :today AND w.provider_id = :provider.
+in D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php (169)
+in D:\OpenServer\domains\localhost\weather\index.php (13)
+2014/08/17 08:34:52 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'prs.name' in 'field list'. The SQL statement executed was: SELECT name_ru, date_forecast, AVG(temp), AVG(humidity), AVG(pressure), latitude, longitude, p.name, prs.name
+                    FROM weatherstation ws
+                    LEFT JOIN city c ON c.id = ws.city_id
+                    LEFT JOIN weather w ON w.station_id = ws.id
+                    LEFT JOIN provider pr ON w.provider_id = pr.id
+                    LEFT JOIN wind_deg wd ON w.wind_deg = wd.id
+                    LEFT JOIN precipitation p ON w.precipitation_id = p.id
+                    WHERE  (c.name_en LIKE :city OR c.name_ru LIKE :city)
+                    AND date_forecast = :today AND w.provider_id = :provider' in D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php:543
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php(169): CDbCommand->queryAll()
+#2 D:\OpenServer\domains\localhost\weather\framework\framework\web\actions\CInlineAction.php(49): WeatherController->actionFind()
+#3 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#6 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#7 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#8 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(291): CFilterChain->run()
+#10 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(282): CController->run('find')
+#12 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('weather/find')
+#13 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#14 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/weather/?r=weather/find&city=novosibirsk
+---
+2014/08/17 08:44:33 [error] [php] Cannot modify header information - headers already sent by (output started at D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php:221) (D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php:222)
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(308): CInlineAction->runWithParams()
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(133): WeatherController->runAction()
+#2 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#3 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#4 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CInlineFilter.php(58): WeatherController->filterAccessControl()
+#5 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(291): CFilterChain->run()
+#7 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(265): WeatherController->runActionWithFilters()
+#8 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(282): WeatherController->run()
+#9 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#10 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#11 D:\OpenServer\domains\localhost\weather\index.php(13): CWebApplication->run()
+REQUEST_URI=/weather/?r=weather/find&city=novosibirsk
+in D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php (222)
+in D:\OpenServer\domains\localhost\weather\index.php (13)
+2014/08/17 14:43:55 [error] [php] Cannot modify header information - headers already sent by (output started at D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php:216) (D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php:234)
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(308): CInlineAction->runWithParams()
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(133): WeatherController->runAction()
+#2 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#3 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#4 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CInlineFilter.php(58): WeatherController->filterAccessControl()
+#5 D:\OpenServer\domains\localhost\weather\framework\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(291): CFilterChain->run()
+#7 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(265): WeatherController->runActionWithFilters()
+#8 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(282): WeatherController->run()
+#9 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#10 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#11 D:\OpenServer\domains\localhost\weather\index.php(13): CWebApplication->run()
+REQUEST_URI=/weather/?r=weather/find
+in D:\OpenServer\domains\localhost\weather\protected\controllers\WeatherController.php (234)
+in D:\OpenServer\domains\localhost\weather\index.php (13)
+2014/08/17 15:51:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:53:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/error".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/error')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/error
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 15:56:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:00:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:30 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:30 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:30 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/?r=site/login
+---
+2014/08/17 16:03:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:03:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "eror".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php:483
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CController.php(270): CController->missingAction('eror')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(282): CController->run('eror')
+#2 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('weather/eror')
+#3 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#4 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/weather/?r=weather/eror
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---
+2014/08/17 16:16:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "site/login".' in D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php:286
+Stack trace:
+#0 D:\OpenServer\domains\localhost\weather\framework\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#1 D:\OpenServer\domains\localhost\weather\framework\framework\base\CApplication.php(184): CWebApplication->processRequest()
+#2 D:\OpenServer\domains\localhost\weather\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/weather/index.php?r=site/login
+---

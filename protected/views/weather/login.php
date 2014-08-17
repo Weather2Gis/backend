@@ -1,5 +1,5 @@
 <?php
-/* @var $this SiteController */
+/* @var $this WeatherController */
 /* @var $model LoginForm */
 /* @var $form CActiveForm  */
 
