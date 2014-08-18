@@ -170,20 +170,19 @@ class WeatherController extends Controller
 		$today = date("Y-m-d");
 
         if(isset($city)) {
-            $city = mb_convert_case($city, MB_CASE_TITLE, "UTF-8");
+            $city = mb_convert_case($city, MB_CASE_LOWER , "UTF-8");
             $weather_cache = Yii::app()->cache->get("find".$city);
             if($weather_cache == false){
 
                 $sql = "SELECT $out_from_db FROM $join
                     WHERE  (c.name_en LIKE :city OR c.name_ru LIKE :city)
                     AND date_forecast = :today AND w.provider_id = :provider";
-
+                echo $city."<br>";
                 $weather_cache = Yii::app()->db->createCommand($sql)
                     ->bindParam(':city', $city, PDO::PARAM_STR)
                     ->bindParam(':provider', $provider, PDO::PARAM_STR)
                     ->bindParam(':today', $today, PDO::PARAM_STR)
                     ->queryAll();
-
                 Yii::app()->cache->set("find".$city, $weather_cache, 86400);
             }
         }else if(isset($lat) && isset($lon)){
@@ -273,7 +272,7 @@ class WeatherController extends Controller
                     LEFT JOIN precipitation p ON w.precipitation_id = p.id";
 		
 		if(isset($city)) {
-            $city = mb_convert_case($city, MB_CASE_TITLE, "UTF-8");
+            $city = mb_convert_case($city, MB_CASE_LOWER, "UTF-8");
             $weather_cache = Yii::app()->cache->get("forecast".$city.$provider);
 
             if($weather_cache == false){
