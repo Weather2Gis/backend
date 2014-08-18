@@ -9,13 +9,12 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Weather', 'url'=>array('index')),
-	array('label'=>'Create Weather', 'url'=>array('create')),
-	array('label'=>'View Weather', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Weather', 'url'=>array('admin')),
+    array('label'=>'Управление погодными данными', 'url'=>array('admin')),
+	array('label'=>'Создать погодные данные', 'url'=>array('create')),
+	array('label'=>'Просмотреть', 'url'=>array('view', 'id'=>$model->id)),
 );
 ?>
 
-<h1>Update Weather <?php echo $model->id; ?></h1>
+<h1>Обновление погодных данных <?php echo $model->id; ?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

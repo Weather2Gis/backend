@@ -2,14 +2,8 @@
 /* @var $this WeatherController */
 /* @var $model Weather */
 
-$this->breadcrumbs=array(
-	'Weathers'=>array('index'),
-	'Manage',
-);
-
 $this->menu=array(
-	array('label'=>'List Weather', 'url'=>array('index')),
-	array('label'=>'Create Weather', 'url'=>array('create')),
+	array('label'=>'Новые данные о погоде', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -26,14 +20,13 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Weathers</h1>
+<h1>Управление погодными данными</h1>
 
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
+<p>Можно ввести оператор сравнения (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
+или <b>=</b>) в начале каждого столбца, чтобы определить, какое сравнение должно быть сделано.
 </p>
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
+<?php echo CHtml::link('Расширенный поиск','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
 	'model'=>$model,

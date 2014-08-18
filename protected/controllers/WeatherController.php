@@ -28,7 +28,7 @@ class WeatherController extends Controller
 	{
 		return array(
 			array('allow',
-				'actions'=>array('index', 'find', 'forecast', 'login', 'error'),
+				'actions'=>array('find', 'forecast', 'login', 'error', 'logout'),
 				'users'=>array('*'),
 			),
 			array('allow',
@@ -36,7 +36,7 @@ class WeatherController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow',
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete', 'index'),
 				'users'=>array('admin'),
 			),
 			array('deny',
@@ -120,17 +120,15 @@ class WeatherController extends Controller
 	 */
 	public function actionIndex()
 	{
-        if(Yii::app()->cache->flush()){
-            echo 'Кэш успешно очищен!!';
-        }
-        echo "<center><h2>Пример запросов на один день</h2>" .
-            "<p>Поиск по городу: <pre>/?r=weather/find&city=Novosibirsk&pr=ya</pre></p>" .
-            "<p>Поиск по координатам: <pre>/?r=weather/find&lat=55.753676&lon=37.619899&pr=owm</pre></p>" .
-            "<p>Поиск в пределах прямоугольника: <pre>/?r=weather/find&lon_top=82.560544&lat_top=55.174534&lon_bottom=83.318972&lat_bottom=54.843024</pre></p></center>";
-
-        echo "<center><h2>Пример запросов на несколько дней вперед с временем суток</h2>" .
-            "<p>Поиск по городу: <pre>/?r=weather/forecast&city=Novosibirsk&pr=ya</pre></p>" .
-            "<p>Поиск по координатам: <pre>/?r=weather/forecast&lat=55.753676&lon=37.619899&pr=owm</pre></p>";
+        $this->actionAdmin();
+//        echo "<center><h2>Пример запросов на один день</h2>" .
+//            "<p>Поиск по городу: <pre>/?r=weather/find&city=Novosibirsk&pr=ya</pre></p>" .
+//            "<p>Поиск по координатам: <pre>/?r=weather/find&lat=55.753676&lon=37.619899&pr=owm</pre></p>" .
+//            "<p>Поиск в пределах прямоугольника: <pre>/?r=weather/find&lon_top=82.560544&lat_top=55.174534&lon_bottom=83.318972&lat_bottom=54.843024</pre></p></center>";
+//
+//        echo "<center><h2>Пример запросов на несколько дней вперед с временем суток</h2>" .
+//            "<p>Поиск по городу: <pre>/?r=weather/forecast&city=Novosibirsk&pr=ya</pre></p>" .
+//            "<p>Поиск по координатам: <pre>/?r=weather/forecast&lat=55.753676&lon=37.619899&pr=owm</pre></p>";
     }
 
     /**
@@ -351,7 +349,7 @@ class WeatherController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='weather-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
@@ -363,18 +361,32 @@ class WeatherController extends Controller
             $this->render('error', $error);
     }
 
+    /**
+     * Осуществляет вход пользователя и перенаправляет на изначальную страницу.
+     */
     public function actionLogin(){
         $model=new LoginForm;
         if(isset($_POST['LoginForm']))
         {
             // получаем данные от пользователя
             $model->attributes=$_POST['LoginForm'];
-            // проверяем полученные данные и, если результат проверки положительный,
+            // проверяем полученные данные и если результат проверки положительный,
             // перенаправляем пользователя на предыдущую страницу
-            if($model->validate())
+            if($model->login()){
                 $this->redirect(Yii::app()->user->returnUrl);
+            }
         }
         // рендерим представление
         $this->render('login',array('model'=>$model));
     }
+
+    /**
+     * Осуществляет выход текущего пользователя и перенаправляет на главную страницу.
+     */
+    public function actionLogout()
+    {
+        Yii::app()->user->logout();
+        $this->redirect(Yii::app()->homeUrl);
+    }
+
 }

@@ -101,17 +101,17 @@ class Weather extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-//		$criteria->compare('date_forecast',$this->date_forecast,true);
-//		$criteria->compare('partofday',$this->partofday);
-//		$criteria->compare('temp',$this->temp);
-//		$criteria->compare('humidity',$this->humidity);
-//		$criteria->compare('pressure',$this->pressure);
-//		$criteria->compare('wind_speed',$this->wind_speed);
-//		$criteria->compare('wind_deg',$this->wind_deg);
-//		$criteria->compare('precipitation_id',$this->precipitation_id);
-//		$criteria->compare('station_id',$this->station_id);
-//		$criteria->compare('provider_id',$this->provider_id);
-//        $criteria->compare('city',$this->station->city->name_en);
+		$criteria->compare('date_forecast',$this->date_forecast,true);
+		$criteria->compare('partofday',$this->partofday);
+		$criteria->compare('temp',$this->temp);
+		$criteria->compare('humidity',$this->humidity);
+		$criteria->compare('pressure',$this->pressure);
+		$criteria->compare('wind_speed',$this->wind_speed);
+		$criteria->compare('wind_deg',$this->wind_deg);
+		$criteria->compare('precipitation_id',$this->precipitation_id);
+		$criteria->compare('station_id',$this->station_id);
+		$criteria->compare('provider_id',$this->provider_id);
+        $criteria->compare('city',$this->station->city->name_en);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

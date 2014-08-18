@@ -10,7 +10,8 @@ class FillDBCommand extends CConsoleCommand {
     public function actionIndex(){
         Yii::import('application.models.*');
         Yii::import('application.components.*');
-        //$this->fillOpenWeather();
+
+        $this->fillOpenWeather();
         $this->fillYandex();
     }
 
@@ -34,7 +35,9 @@ class FillDBCommand extends CConsoleCommand {
                     $weather->precipitation_id=$main['precipitation_id'];
                     $weather->station_id=$station->id;
                     $weather->provider_id = 1;
-                    $weather->save();
+                    if(!$weather->save()){
+                        echo "Ошибка записи в бд: ".$main['name'];
+                    }
                 }
             }
         }
@@ -59,7 +62,9 @@ class FillDBCommand extends CConsoleCommand {
                     $weather->precipitation_id=$main['precipitation_id'];
                     $weather->station_id=$station->id;
                     $weather->provider_id = 2;
-                    $weather->save();
+                    if(!$weather->save()){
+                        echo "Ошибка записи в бд: ".$city->name_ru;
+                    }
                 }
             }
 
