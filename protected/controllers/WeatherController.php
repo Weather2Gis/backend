@@ -208,7 +208,10 @@ class WeatherController extends Controller
                 $sql = "SELECT $out_from_db FROM $join
                     WHERE ws.id IN (SELECT id FROM weatherstation
                                     WHERE Contains(GeomFromText('Polygon(($lat_top $lon_top, $lat_top $lon_bottom, $lat_bottom $lon_bottom,$lat_top $lon_bottom, $lat_top $lon_top))'), point))
-                    AND date_forecast = :today AND partofday = 2 AND w.provider_id = :provider";
+                    AND date_forecast = :today AND w.provider_id = :provider
+                    GROUP BY name_ru
+                    ORDER BY population DESC
+                    LIMIT 15";
 
                 $weather_cache = Yii::app()->db->createCommand($sql)
                     ->bindParam(':provider', $provider, PDO::PARAM_STR)
