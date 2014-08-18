@@ -55,7 +55,7 @@ return array(
 			'connectionString' => 'mysql:host=localhost;dbname=weather',
 			'emulatePrepare' => true,
 			'username' => 'root',
-			'password' => '123',
+			'password' => 'user',
 			'charset' => 'utf8',
 		),
 

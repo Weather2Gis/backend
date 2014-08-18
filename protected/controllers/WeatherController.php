@@ -263,7 +263,7 @@ class WeatherController extends Controller
 		$today = date("Y-m-d");
 
         $out_from_db = "name_ru as city, date_forecast as date, partofday, temp, humidity,
-	                    pressure, latitude, longitude, p.name as weather, pr.name as provider";
+	                    pressure, latitude, longitude, wd.description, wind_speed, p.name as weather, pr.name as provider";
 
         $join = "weatherstation ws
                     LEFT JOIN city c ON c.id = ws.city_id
@@ -274,7 +274,7 @@ class WeatherController extends Controller
 		
 		if(isset($city)) {
             $city = mb_convert_case($city, MB_CASE_TITLE, "UTF-8");
-            $weather_cache = Yii::app()->cache->get("forecast".$city);
+            $weather_cache = Yii::app()->cache->get("forecast".$city.$provider);
 
             if($weather_cache == false){
                 $sql = "SELECT $out_from_db
@@ -289,12 +289,12 @@ class WeatherController extends Controller
                     ->bindParam(':today', $today, PDO::PARAM_STR)
                     ->queryAll();
 
-                Yii::app()->cache->set("forecast".$city, $weather_cache, 86400);
+                Yii::app()->cache->set("forecast".$city.$provider, $weather_cache, 86400);
             }
         }
 
         if(isset($lat) && isset($lon)){
-            $weather_cache = Yii::app()->cache->get("forecast".$lat.$lon);
+            $weather_cache = Yii::app()->cache->get("forecast".$lat.$lon.$provider);
             if($weather_cache == false){
                 $sql = "SELECT $out_from_db FROM $join
 					WHERE ws.latitude = :lat AND ws.longitude = :lon
@@ -307,7 +307,7 @@ class WeatherController extends Controller
                     ->bindParam(':provider', $provider, PDO::PARAM_STR)
                     ->bindParam(':today', $today, PDO::PARAM_STR)
                     ->queryAll();
-                Yii::app()->cache->set("forecast".$lat.$lon, $weather_cache, 86400);
+                Yii::app()->cache->set("forecast".$lat.$lon.$provider, $weather_cache, 86400);
             }
 
         }
