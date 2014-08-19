@@ -8,10 +8,6 @@
 
 class WUParser extends CComponent
 {
-    public function init(){
-        return true;
-    }
-
     public static function parse($cityName)
     {
         //list : утро, день, вечер, ночь
