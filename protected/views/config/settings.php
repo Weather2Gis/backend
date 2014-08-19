@@ -15,7 +15,8 @@ $this->menu=array(
     <td><?php echo CHtml::Button('Очистить',array(
             'submit' => array('config/clearCache'),
         ));
-        echo " ".$_GET['isFlush'];
+        if(isset($_GET['isFlush']))
+            echo " ".$_GET['isFlush'];
 
         ?></td>
 </tr>

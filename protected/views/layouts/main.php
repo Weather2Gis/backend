@@ -31,7 +31,9 @@
 			'items'=>array(
 				array('label'=>'Войти', 'url'=>array('/weather/login'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>'Выйти ('.Yii::app()->user->name.')', 'url'=>array('/weather/logout'), 'visible'=>!Yii::app()->user->isGuest),
-                array('label'=>'Настройки', 'url'=>array('/config/settings')),
+                array('label'=>'Управление погодными данными', 'url'=>array('/weather/admin'), 'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>'Настройки', 'url'=>array('/config/settings'), 'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>'Инфо', 'url'=>array('/weather/info')),
 			),
 		)); ?>
 	</div><!-- mainmenu -->

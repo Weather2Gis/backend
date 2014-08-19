@@ -111,7 +111,6 @@ class Weather extends CActiveRecord
 		$criteria->compare('precipitation_id',$this->precipitation_id);
 		$criteria->compare('station_id',$this->station_id);
 		$criteria->compare('provider_id',$this->provider_id);
-        $criteria->compare('city',$this->station->city->name_en);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

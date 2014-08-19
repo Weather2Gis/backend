@@ -33,7 +33,8 @@ $('.search-form form').submit(function(){
 )); ?>
 </div><!-- search-form -->
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'weather-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,

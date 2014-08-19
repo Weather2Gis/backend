@@ -21,7 +21,7 @@ $this->breadcrumbs=array(
 		'validateOnSubmit'=>true,
 	),
 )); ?>
-
+<center>
 	<p class="note">Поля с <span class="required">*</span> обязательные.</p>
 
 	<div class="row">
@@ -45,6 +45,6 @@ $this->breadcrumbs=array(
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Войти'); ?>
 	</div>
-
+</center>
 <?php $this->endWidget(); ?>
 </div><!-- form -->
