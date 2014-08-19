@@ -9,6 +9,8 @@ return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Погода',
     'defaultController'=>'weather',
+    'language' => 'ru',
+    'sourceLanguage' => 'en',
 
 	'preload'=>array('log'),
 
@@ -59,9 +61,14 @@ return array(
 			'charset' => 'utf8',
 		),
 
+        'coreMessages'=>array(
+            'basePath'=>'protected/messages',
+        ),
+
 		'errorHandler'=>array(
 			'errorAction'=>'weather/error',
 		),
+
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(

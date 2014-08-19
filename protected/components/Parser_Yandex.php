@@ -24,18 +24,6 @@ class Parser_Yandex
 
         $xml = simplexml_load_file($data_file);
 
-        $map_weather = [
-            'clear'     => 3,
-            'cloudy'    => 1,
-            'rain'      => 2,
-            'overcast'  => 1,
-        'overcast-and_rain'=>2,
-        'partly-cloudy-and-light-rain'=>2,
-        'partly-cloudy'=>1,
-        'overcast-and-light-rain'=>2,
-        'cloudy-and-light-rain'=>2,
-        'mostly-clear'=>3];
-
         $map = ['n'  => 1,
                 'nw' => 2,
                 'w'  => 3,
@@ -59,7 +47,7 @@ class Parser_Yandex
                         'humidity'      =>  (int)$day->day_part[$part]->humidity,
                         'pressure'      =>  (int)$day->day_part[$part]->pressure,
                         'wind_deg'       => (int)strtr($day->day_part[$part]->wind_direction, $map),
-                        'precipitation_id'   => (int)strtr($day->day_part[$part]->weather_condition['code'], $map_weather)
+                        'precipitation'   => (string)$day->day_part[$part]->weather_type,
                     ];
             }
         }

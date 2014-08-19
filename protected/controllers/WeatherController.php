@@ -138,15 +138,14 @@ class WeatherController extends Controller
     {
 		$pr = ["ya" => 1, "owm" => 2]; //Провайдер
 
-	    $out_from_db = "name_ru as city, date_forecast as date, AVG(temp) as temp, AVG(humidity) as humidity,
-	                    AVG(pressure) as pressure, latitude, longitude, p.name as weather, pr.name as provider";
+	    $out_from_db = "name_ru as city, date_forecast as date, ROUND(AVG(temp)) as temp, ROUND(AVG(humidity)) as humidity,
+	                    ROUND(AVG(pressure)) as pressure, latitude, longitude, precipitation as weather, pr.name as provider";
 
         $join = "weatherstation ws
                     LEFT JOIN city c ON c.id = ws.city_id
                     LEFT JOIN weather w ON w.station_id = ws.id
                     LEFT JOIN provider pr ON w.provider_id = pr.id
-                    LEFT JOIN wind_deg wd ON w.wind_deg = wd.id
-                    LEFT JOIN precipitation p ON w.precipitation_id = p.id";
+                    LEFT JOIN wind_deg wd ON w.wind_deg = wd.id";
 
         $city = Yii::app()->request->getQuery('city');
         $lat = Yii::app()->request->getQuery('lat');
@@ -200,7 +199,7 @@ class WeatherController extends Controller
                     AND date_forecast = :today AND w.provider_id = :provider
                     GROUP BY name_ru
                     ORDER BY population DESC
-                    LIMIT 15";
+                    LIMIT 30";
 
                 $weather_cache = Yii::app()->db->createCommand($sql)
                     ->bindParam(':provider', $provider, PDO::PARAM_STR)
@@ -252,14 +251,13 @@ class WeatherController extends Controller
 		$today = date("Y-m-d");
 
         $out_from_db = "name_ru as city, date_forecast as date, partofday, temp, humidity,
-	                    pressure, latitude, longitude, wd.description, wind_speed, p.name as weather, pr.name as provider";
+	                    pressure, latitude, longitude, wd.description, wind_speed, precipitation as weather, pr.name as provider";
 
         $join = "weatherstation ws
                     LEFT JOIN city c ON c.id = ws.city_id
                     LEFT JOIN weather w ON w.station_id = ws.id
                     LEFT JOIN provider pr ON w.provider_id = pr.id
-                    LEFT JOIN wind_deg wd ON w.wind_deg = wd.id
-                    LEFT JOIN precipitation p ON w.precipitation_id = p.id";
+                    LEFT JOIN wind_deg wd ON w.wind_deg = wd.id";
 		
 		if(isset($city)) {
             $city = mb_convert_case($city, MB_CASE_LOWER, "UTF-8");

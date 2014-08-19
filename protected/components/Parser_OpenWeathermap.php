@@ -19,9 +19,9 @@ class Parser_OpenWeathermap {
         $list = ["09:00:00" => 1, "15:00:00" => 2, "21:00:00" => 3, "03:00:00" => 4];
 
         $map_weather = [
-            'Clear' => 3,
-            'Clouds' => 1,
-            'Rain' => 2];
+            'Clear' => "Ясно",
+            'Clouds' => "Облачно",
+            'Rain' => "Дождь"];
 
         $degs = [
             0 => 1, 15 => 1, 16 => 1,
@@ -50,7 +50,7 @@ class Parser_OpenWeathermap {
                             'wind_deg' => $degs[ceil($time['wind']['deg'] / 22.5)],
                             'humidity' => $time['main']['humidity'],
                             'pressure' => ceil($time['main']['pressure'] * 0.75),
-                            'precipitation_id' => (int)strtr($time['weather']['0']['main'] , $map_weather)
+                            'precipitation' => strtr($time['weather']['0']['main'] , $map_weather)
                         ];
                     }
                 }

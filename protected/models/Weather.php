@@ -12,12 +12,11 @@
  * @property integer $pressure
  * @property double $wind_speed
  * @property integer $wind_deg
- * @property integer $precipitation_id
  * @property integer $station_id
  * @property integer $provider_id
+ * @property string $precipitation
  *
  * The followings are the available model relations:
- * @property Precipitation $precipitation
  * @property Weatherstation $station
  * @property WindDeg $windDeg
  * @property Provider $provider
@@ -40,12 +39,13 @@ class Weather extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('date_forecast, temp, humidity, pressure, wind_speed, wind_deg, precipitation_id, station_id, provider_id', 'required'),
-			array('partofday, temp, humidity, pressure, wind_deg, precipitation_id, station_id, provider_id', 'numerical', 'integerOnly'=>true),
+			array('date_forecast, temp, humidity, pressure, wind_speed, wind_deg, station_id, provider_id, precipitation', 'required'),
+			array('partofday, temp, humidity, pressure, wind_deg, station_id, provider_id', 'numerical', 'integerOnly'=>true),
 			array('wind_speed', 'numerical'),
-            array('wind_deg', 'in', 'range' => [1,2,3,4,5,6,7,8,9]),
+			array('precipitation', 'length', 'max'=>50),
+			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, date_forecast, partofday, temp, humidity, pressure, wind_speed, wind_deg, precipitation_id, station_id, provider_id', 'safe', 'on'=>'search'),
+			array('id, date_forecast, partofday, temp, humidity, pressure, wind_speed, wind_deg, station_id, provider_id, precipitation', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,8 +54,9 @@ class Weather extends CActiveRecord
 	 */
 	public function relations()
 	{
+		// NOTE: you may need to adjust the relation name and the related
+		// class name for the relations automatically generated below.
 		return array(
-			'precipitation' => array(self::BELONGS_TO, 'Precipitation', 'precipitation_id'),
 			'station' => array(self::BELONGS_TO, 'Weatherstation', 'station_id'),
 			'windDeg' => array(self::BELONGS_TO, 'WindDeg', 'wind_deg'),
 			'provider' => array(self::BELONGS_TO, 'Provider', 'provider_id'),
@@ -69,16 +70,16 @@ class Weather extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'date_forecast' => 'Дата',
-			'partofday' => 'Время суток',
-			'temp' => 'Температура',
+			'date_forecast' => 'Date Forecast',
+			'partofday' => 'Partofday',
+			'temp' => 'Temp',
 			'humidity' => 'Humidity',
 			'pressure' => 'Pressure',
 			'wind_speed' => 'Wind Speed',
 			'wind_deg' => 'Wind Deg',
-			'precipitation_id' => 'Precipitation',
 			'station_id' => 'Station',
 			'provider_id' => 'Provider',
+			'precipitation' => 'Precipitation',
 		);
 	}
 
@@ -108,14 +109,38 @@ class Weather extends CActiveRecord
 		$criteria->compare('pressure',$this->pressure);
 		$criteria->compare('wind_speed',$this->wind_speed);
 		$criteria->compare('wind_deg',$this->wind_deg);
-		$criteria->compare('precipitation_id',$this->precipitation_id);
 		$criteria->compare('station_id',$this->station_id);
 		$criteria->compare('provider_id',$this->provider_id);
+		$criteria->compare('precipitation',$this->precipitation,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+//
+//    public function beforeSave()
+//    {
+//
+//        if($this->isNewRecord) {
+//            $c = new CDbCriteria();
+//            $c->addCondition("date_forecast = :date_forecast");
+//            $c->addCondition("provider_id = :provider_id");
+//            $c->addCondition("partofday = :partofday");
+//
+//            $c->params[':date_forecast'] = $this->date_forecast;
+//            $c->params[':provider_id'] = $this->provider_id;
+//            $c->params[':partofday'] = $this->partofday;
+//
+//            if($model = Weather::model()->find($c)) {
+//                $model->attributes = $this->attributes;
+//                $model->save();
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//
+//    }
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -127,8 +152,4 @@ class Weather extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-
-    public static function findByCity($city){
-
-    }
 }
