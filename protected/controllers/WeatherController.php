@@ -229,7 +229,6 @@ class WeatherController extends Controller
             }
         }
 
-
         header('Content-Type: application/json');
         $json = JSON::encode($weather_cache);
         printf("callback(%s)", $json);
@@ -278,7 +277,6 @@ class WeatherController extends Controller
                     ->bindParam(':provider', $provider, PDO::PARAM_STR)
                     ->bindParam(':today', $today, PDO::PARAM_STR)
                     ->queryAll();
-
                 Yii::app()->cache->set("forecast".$city.$provider, $weather_cache, 86400);
             }
         }
@@ -301,7 +299,6 @@ class WeatherController extends Controller
             }
 
         }
-        var_dump($weather_cache);
         header('Content-Type: application/json');
 		$json = JSON::encode($weather_cache);
         printf("callback(%s)", $json);		
