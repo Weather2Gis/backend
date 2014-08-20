@@ -11,8 +11,8 @@ class FillDBCommand extends CConsoleCommand {
         Yii::import('application.models.*');
         Yii::import('application.components.*');
 
-        $this->fillYandex();
-        $this->fillOpenWeather();
+       //$this->fillYandex();
+        //$this->fillOpenWeather();
         $this->fillWunderground();
     }
 

@@ -48,10 +48,16 @@ return array(
 		),*/
 
         'cache'=>array(
-            'class'=>'system.caching.CDbCache',
-            'cacheTableName' => 'cache',
-            'autoCreateCacheTable' => true,
-            'connectionID' => 'db',
+//            'class'=>'system.caching.CDbCache',
+//            'cacheTableName' => 'cache',
+//            'autoCreateCacheTable' => true,
+//            'connectionID' => 'db',
+
+            'class'=>'system.caching.CMemCache',
+            'servers'=>array(
+                array('host'=>'localhost', 'port'=>11211, 'weight'=>64),
+            ),
+            'useMemcached' => true,
         ),
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=weather',
