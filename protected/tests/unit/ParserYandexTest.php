@@ -2,38 +2,55 @@
 /**
  * Created by PhpStorm.
  * User: man
- * Date: 19.08.2014
- * Time: 14:28
+
  */
 
-class ParserYandexTest extends PHPUnit_Framework_TestCase{
+class ParserYandexTest extends CDbTestCase{
 
-    public function testSaveToDb(){
-
+    public function testName(){
         $ya = Parser_Yandex::parse(29634);
-        $cityNameTest = 'Novosibirsk';
-        $this->assertEquals(true, isset($ya['name']));
+        $this->assertEquals('Новосибирск',$ya['0']['name']);
+    }
 
-//        $city = City::model()->findByAttributes(array('name_ru' => $ya['name']));
-//
-//        $this->assertEquals($city, $cityNameTest);
-//        $this->assertEquals(1, 2);
-//        $this->assertEquals(1, 3, "TEST");
+    public function testTypeValueData(){
+        $ya = Parser_Yandex::parse(29634);
+        $this->assertInternalType('string', $ya['0']['date_forecast']);
+    }
+
+    public function testTypeValuePartofday(){
+        $ya = Parser_Yandex::parse(29634);
+        $this->assertInternalType('int', $ya['0']['partofday']);
+    }
+
+    public function testTypeValueTemp(){
+        $ya = Parser_Yandex::parse(29634);
+        $this->assertInternalType('int', $ya['0']['temp']);
+    }
+
+    public function testTypeValueSpeed(){
+        $ya = Parser_Yandex::parse(29634);
+        $this->assertInternalType('float', $ya['0']['wind_speed']);
     }
 
 
+    public function testTypeValueHumidity(){
+        $ya = Parser_Yandex::parse(29634);
+        $this->assertInternalType('int', $ya['0']['humidity']);
+    }
 
+    public function testTypeValuePressure(){
+        $ya = Parser_Yandex::parse(29634);
+        $this->assertInternalType('int', $ya['0']['pressure']);
+    }
 
+    public function testTypeValueDeg(){
+        $ya = Parser_Yandex::parse(29634);
+        $this->assertInternalType('int', $ya['0']['wind_deg']);
+    }
 
-    # получение погоды
-    # запись в базу
-    # выдача
-        # по городу
-        # по квадрату
-        # ...
-    # кэширование
-
-
-
+    public function testTypeValuePrecipitation(){
+        $ya = Parser_Yandex::parse(29634);
+        $this->assertInternalType('string', $ya['0']['precipitation']);
+    }
 
 }

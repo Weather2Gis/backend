@@ -45,14 +45,14 @@ class Parser_OpenWeathermap {
                     $partofday = explode(" ", $time['dt_txt'])[1];
                     if(array_key_exists($partofday, $list)){
                         $array[] = [
-                            'date_forecast' => $date,
-                            'partofday' => $list[$partofday],
-                            'temp' => ceil($time['main']['temp']),
-                            'wind_speed' => $time['wind']['speed'],
-                            'wind_deg' => $degs[ceil($time['wind']['deg'] / 22.5)],
-                            'humidity' => $time['main']['humidity'],
-                            'pressure' => ceil($time['main']['pressure'] * 0.75),
-                            'precipitation' => strtr($time['weather']['0']['main'] , $map_weather)
+                            'date_forecast' => (string)$date,
+                            'partofday'     => (int)$list[$partofday],
+                            'temp'          => (int)ceil($time['main']['temp']),
+                            'wind_speed'    => (float)$time['wind']['speed'],
+                            'wind_deg'      => (int)$degs[ceil($time['wind']['deg'] / 22.5)],
+                            'humidity'      => (int)$time['main']['humidity'],
+                            'pressure'      => (int)ceil($time['main']['pressure'] * 0.75),
+                            'precipitation' => (string)strtr($time['weather']['0']['main'] , $map_weather)
                         ];
                     }
                 }

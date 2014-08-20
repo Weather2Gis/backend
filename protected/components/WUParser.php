@@ -44,12 +44,12 @@ class WUParser extends CComponent
 
                     $array[] = [
                         'date_forecast' => (string)$data->FCTTIME->year.'-'.$data->FCTTIME->mon_padded.'-'.$data->FCTTIME->mday,
-                        'partofday' => (int)$list[(string)$data->FCTTIME->hour],
-                        'temp' => (int)$data->temp->metric,
-                        'wind_speed' => (float)ceil($data->wspd->metric * 0.27),
-                        'wind_deg' => (int)$degs[ceil($data->wdir->degrees / 22.5)],
-                        'humidity' => (int)$data->humidity,
-                        'pressure' => (int)ceil($data->mslp->metric * 0.75),
+                        'partofday'     => (int)$list[(string)$data->FCTTIME->hour],
+                        'temp'          => (int)$data->temp->metric,
+                        'wind_speed'    => (float)ceil($data->wspd->metric * 0.27),
+                        'wind_deg'      => (int)$degs[ceil($data->wdir->degrees / 22.5)],
+                        'humidity'      => (int)$data->humidity,
+                        'pressure'      => (int)ceil($data->mslp->metric * 0.75),
                         'precipitation' => Yii::t('app', (string)$data->wx),
                     ];
                 }

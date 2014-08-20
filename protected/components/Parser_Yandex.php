@@ -48,8 +48,8 @@ class Parser_Yandex
                         'wind_speed'    =>  (float)$day->day_part[$part]->wind_speed,
                         'humidity'      =>  (int)$day->day_part[$part]->humidity,
                         'pressure'      =>  (int)$day->day_part[$part]->pressure,
-                        'wind_deg'       => (int)strtr($day->day_part[$part]->wind_direction, $map),
-                        'precipitation'   => (string)$day->day_part[$part]->weather_type,
+                        'wind_deg'      =>  (int)strtr($day->day_part[$part]->wind_direction, $map),
+                        'precipitation' =>  (string)$day->day_part[$part]->weather_type,
                     ];
             }
         }
