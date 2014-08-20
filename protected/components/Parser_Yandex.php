@@ -8,11 +8,17 @@
 
 class Parser_Yandex
 {
+
     const MORNING = 0;
     const DAY = 1;
     const EVENING = 2;
     const NIGHT = 3;
 
+    /**
+     * Прогноз погоды с сервиса yandex
+     * @param $city_id идентификатор города
+     * @return array массив со всеми нужными параметрами погоды на один город
+     */
     public static function parse($city_id)
     {
         $data_file = "http://export.yandex.ru/weather-ng/forecasts/$city_id.xml"; // адрес xml файла
