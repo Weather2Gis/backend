@@ -6,6 +6,8 @@
  * Time: 17:27
  */
 
+
+
 class Parser_OpenWeathermap {
 
     /**

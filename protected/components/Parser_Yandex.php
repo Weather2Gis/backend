@@ -6,6 +6,8 @@
  * Time: 12:59
  */
 
+
+
 class Parser_Yandex
 {
     const MORNING = 0;

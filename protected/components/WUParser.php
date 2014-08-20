@@ -6,6 +6,8 @@
  * Time: 13:08
  */
 
+
+
 class WUParser extends CComponent
 {
     /**Собирает данные с api wundeground
