@@ -60,6 +60,7 @@ class Weather extends CActiveRecord
 			'station' => array(self::BELONGS_TO, 'Weatherstation', 'station_id'),
 			'windDeg' => array(self::BELONGS_TO, 'WindDeg', 'wind_deg'),
 			'provider' => array(self::BELONGS_TO, 'Provider', 'provider_id'),
+            'city'=>array(self::HAS_ONE,'City',array('city_id'=>'id'),'through'=>'station'),
 		);
 	}
 
@@ -152,4 +153,138 @@ class Weather extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+    public static function findByCity($today, $city, $provider){
+        $criteria=new CDbCriteria;
+        $criteria->alias = 'weather';
+        $criteria->select = 'date_forecast,  ROUND(AVG(temp)) as temp, ROUND(AVG(humidity)) as humidity, ROUND(AVG(pressure)) as pressure, precipitation';
+        $criteria->condition = "(`city`.`name_en` LIKE :city OR `city`.`name_ru` LIKE :city)
+                                AND `weather`.`date_forecast` = :today AND `weather`.`provider_id` = :provider";
+        $criteria->params = array(':city'=>$city, ':provider'=>$provider, ':today'=>$today);
+        $criteria->with = array('station', 'windDeg', 'provider', 'city');
+        $model = Weather::model()->find($criteria);
+
+        $result[] = [
+            'city'=> mb_convert_case($model->city->name_ru, MB_CASE_LOWER , "UTF-8"),
+            'date'=> $model['date_forecast'],
+            'temp'=> $model['temp'],
+            'humidity'=> $model['humidity'],
+            'pressure'=> $model['pressure'],
+            'latitude'=> $model->station->latitude,
+            'longitude'=> $model->station->longitude,
+            'precipitation'=> $model['precipitation'],
+            'provider'=> $model->provider->name,
+        ];
+
+        return $result;
+    }
+
+    public static function findByCoordinates($today, $lat, $lon, $provider){
+        $criteria=new CDbCriteria;
+        $criteria->alias = 'weather';
+        $criteria->select = 'date_forecast,  ROUND(AVG(temp)) as temp, ROUND(AVG(humidity)) as humidity, ROUND(AVG(pressure)) as pressure, precipitation';
+        $criteria->condition = "station.latitude = :lat AND station.longitude = :lon
+					                AND date_forecast = :today AND provider_id = :provider";
+        $criteria->params = array(':lat'=>$lat, ':lon'=>$lon, ':provider'=>$provider, ':today'=>$today);
+        $criteria->with = array('station', 'windDeg', 'provider', 'city');
+        $model = Weather::model()->find($criteria);
+
+        $result[] = [
+            'city'=> mb_convert_case($model->city->name_ru, MB_CASE_LOWER , "UTF-8"),
+            'date'=> $model['date_forecast'],
+            'temp'=> $model['temp'],
+            'humidity'=> $model['humidity'],
+            'pressure'=> $model['pressure'],
+            'latitude'=> $model->station->latitude,
+            'longitude'=> $model->station->longitude,
+            'precipitation'=> $model['precipitation'],
+            'provider'=> $model->provider->name,
+        ];
+
+        return $result;
+    }
+
+    public static function findByRect($today, $lat_top, $lon_top, $lat_bottom, $lon_bottom, $provider){
+        $criteria=new CDbCriteria;
+        $criteria->alias = 'weather';
+        $criteria->select = 'date_forecast,  ROUND(AVG(temp)) as temp, ROUND(AVG(humidity)) as humidity, ROUND(AVG(pressure)) as pressure, precipitation';
+        $criteria->condition = "station.id IN (SELECT id FROM weatherstation
+            WHERE Contains(GeomFromText('Polygon(($lat_top $lon_top, $lat_top $lon_bottom, $lat_bottom $lon_bottom,$lat_top $lon_bottom, $lat_top $lon_top))'), point))
+            AND date_forecast = :today AND provider_id = :provider";
+        $criteria->group = 'name_ru';
+        $criteria->order = 'population DESC';
+        $criteria->limit = '30';
+        $criteria->params = array(':provider'=>$provider, ':today'=>$today);
+        $criteria->with = array('station', 'windDeg', 'provider', 'city');
+        $models = Weather::model()->findAll($criteria);
+        foreach($models as $model){
+            $result[] = [
+                'city'=> mb_convert_case($model->city->name_ru, MB_CASE_LOWER , "UTF-8"),
+                'date'=> $model['date_forecast'],
+                'temp'=> $model['temp'],
+                'humidity'=> $model['humidity'],
+                'pressure'=> $model['pressure'],
+                'latitude'=> $model->station->latitude,
+                'longitude'=> $model->station->longitude,
+                'precipitation'=> $model['precipitation'],
+                'provider'=> $model->provider->name,
+            ];
+        }
+
+        return $result;
+    }
+
+    public static function findAllByCity($today, $city, $provider){
+        $criteria=new CDbCriteria;
+        $criteria->alias = 'weather';
+        $criteria->select = 'date_forecast, partofday, temp, humidity, pressure, precipitation';
+        $criteria->condition = "(`city`.`name_en` LIKE :city OR `city`.`name_ru` LIKE :city)
+                                AND `weather`.`date_forecast` >= :today AND `weather`.`provider_id` = :provider";
+        $criteria->params = array(':city'=>$city, ':provider'=>$provider, ':today'=>$today);
+        $criteria->order = 'date_forecast ASC, partofday ASC';
+        $criteria->with = array('station', 'windDeg', 'provider', 'city');
+        $models = Weather::model()->findAll($criteria);
+        foreach($models as $model){
+            $result[] = [
+                'city'=> mb_convert_case($model->city->name_ru, MB_CASE_LOWER , "UTF-8"),
+                'date'=> $model['date_forecast'],
+                'partofday'=> $model['partofday'],
+                'temp'=> $model['temp'],
+                'humidity'=> $model['humidity'],
+                'pressure'=> $model['pressure'],
+                'latitude'=> $model->station->latitude,
+                'longitude'=> $model->station->longitude,
+                'precipitation'=> $model['precipitation'],
+                'provider'=> $model->provider->name,
+            ];
+        }
+        return $result;
+    }
+
+    public static function findAllByCoordinates($today, $lat, $lon, $provider){
+        $criteria=new CDbCriteria;
+        $criteria->alias = 'weather';
+        $criteria->select = 'date_forecast, partofday, temp, humidity, pressure, precipitation';
+        $criteria->condition = "station.latitude = :lat AND station.longitude = :lon
+					                AND date_forecast >= :today AND provider_id = :provider";
+        $criteria->params = array(':lat'=>$lat, ':lon'=>$lon, ':provider'=>$provider, ':today'=>$today);
+        $criteria->order = 'date_forecast, partofday';
+        $criteria->with = array('station', 'windDeg', 'provider', 'city');
+        $models = Weather::model()->findAll($criteria);
+        foreach($models as $model){
+            $result[] = [
+                'city'=> mb_convert_case($model->city->name_ru, MB_CASE_LOWER , "UTF-8"),
+                'date'=> $model['date_forecast'],
+                'partofday'=> $model['partofday'],
+                'temp'=> $model['temp'],
+                'humidity'=> $model['humidity'],
+                'pressure'=> $model['pressure'],
+                'latitude'=> $model->station->latitude,
+                'longitude'=> $model->station->longitude,
+                'precipitation'=> $model['precipitation'],
+                'provider'=> $model->provider->name,
+            ];
+        }
+        return $result;
+    }
 }

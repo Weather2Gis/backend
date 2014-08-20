@@ -136,16 +136,7 @@ class WeatherController extends Controller
      */
     public function actionFind()
     {
-		$pr = ["ya" => 1, "owm" => 2]; //Провайдер
-
-	    $out_from_db = "name_ru as city, date_forecast as date, ROUND(AVG(temp)) as temp, ROUND(AVG(humidity)) as humidity,
-	                    ROUND(AVG(pressure)) as pressure, latitude, longitude, precipitation as weather, pr.name as provider";
-
-        $join = "weatherstation ws
-                    LEFT JOIN city c ON c.id = ws.city_id
-                    LEFT JOIN weather w ON w.station_id = ws.id
-                    LEFT JOIN provider pr ON w.provider_id = pr.id
-                    LEFT JOIN wind_deg wd ON w.wind_deg = wd.id";
+		$pr = ["ya" => 1, "owm" => 2, "wund" => 3]; //Провайдер
 
         $city = Yii::app()->request->getQuery('city');
         $lat = Yii::app()->request->getQuery('lat');
@@ -160,71 +151,31 @@ class WeatherController extends Controller
 
         if(isset($city)) {
             $city = mb_convert_case($city, MB_CASE_LOWER , "UTF-8");
-            $weather_cache = Yii::app()->cache->get("find".$city);
+            $weather_cache = Yii::app()->cache->get("find".$city.$provider);
             if($weather_cache == false){
-
-                $sql = "SELECT $out_from_db FROM $join
-                    WHERE  (c.name_en LIKE :city OR c.name_ru LIKE :city)
-                    AND date_forecast = :today AND w.provider_id = :provider";
-                echo $city."<br>";
-                $weather_cache = Yii::app()->db->createCommand($sql)
-                    ->bindParam(':city', $city, PDO::PARAM_STR)
-                    ->bindParam(':provider', $provider, PDO::PARAM_STR)
-                    ->bindParam(':today', $today, PDO::PARAM_STR)
-                    ->queryAll();
-                Yii::app()->cache->set("find".$city, $weather_cache, 86400);
+                $weather_cache = Weather::model()->findByCity($today, $city, $provider);
+                Yii::app()->cache->set("find".$city.$provider, $weather_cache, 86400);
             }
         }else if(isset($lat) && isset($lon)){
-            $weather_cache = Yii::app()->cache->get("find".$lat.$lon);
+            $weather_cache = Yii::app()->cache->get("find".$lat.$lon.$provider);
             if($weather_cache == false){
-                $sql = "SELECT $out_from_db FROM $join
-					WHERE ws.latitude = :lat AND ws.longitude = :lon
-					AND date_forecast = :today AND provider_id = :provider";
-
-                $weather_cache = Yii::app()->db->createCommand($sql)
-                    ->bindParam(':lat', $lat, PDO::PARAM_STR)
-                    ->bindParam(':lon', $lon, PDO::PARAM_STR)
-                    ->bindParam(':provider', $provider, PDO::PARAM_STR)
-                    ->bindParam(':today', $today, PDO::PARAM_STR)
-                    ->queryAll();
-                Yii::app()->cache->set("find".$lat.$lon, $weather_cache, 86400);
+                $weather_cache = Weather::model()->findByCoordinates($today, $lat, $lon, $provider);
+                Yii::app()->cache->set("find".$lat.$lon.$provider, $weather_cache, 86400);
             }
         }else if(isset($lon_top) && isset($lat_top) && isset($lon_bottom) && isset($lat_bottom)){
-            $weather_cache = Yii::app()->cache->get("find".$lon_top.$lat_top.$lon_bottom.$lat_bottom);
+            $weather_cache = Yii::app()->cache->get("find".$lon_top.$lat_top.$lon_bottom.$lat_bottom.$provider);
             if($weather_cache == false){
-
-                $sql = "SELECT $out_from_db FROM $join
-                    WHERE ws.id IN (SELECT id FROM weatherstation
-                                    WHERE Contains(GeomFromText('Polygon(($lat_top $lon_top, $lat_top $lon_bottom, $lat_bottom $lon_bottom,$lat_top $lon_bottom, $lat_top $lon_top))'), point))
-                    AND date_forecast = :today AND w.provider_id = :provider
-                    GROUP BY name_ru
-                    ORDER BY population DESC
-                    LIMIT 30";
-
-                $weather_cache = Yii::app()->db->createCommand($sql)
-                    ->bindParam(':provider', $provider, PDO::PARAM_STR)
-                    ->bindParam(':today', $today, PDO::PARAM_STR)
-                    ->queryAll();
-                Yii::app()->cache->set("find".$lon_top.$lat_top.$lon_bottom.$lat_bottom, $weather_cache, 86400);
+                $weather_cache = Weather::model()->findByRect($today, $lat_top, $lon_top, $lat_bottom, $lon_bottom, $provider);
+                Yii::app()->cache->set("find".$lon_top.$lat_top.$lon_bottom.$lat_bottom.$provider, $weather_cache, 86400);
             }
         } else{
             $ip = $_SERVER["REMOTE_ADDR"];
             $city = ParserIP::parse($ip);
             $city = mb_convert_case($city, MB_CASE_TITLE, "UTF-8");
-            $weather_cache = Yii::app()->cache->get("find".$ip);
+            $weather_cache = Yii::app()->cache->get("find".$city.$provider);
             if($weather_cache == false){
-
-                $sql = "SELECT $out_from_db FROM $join
-                    WHERE  (c.name_en LIKE :city OR c.name_ru LIKE :city)
-                    AND date_forecast = :today AND w.provider_id = :provider";
-
-                $weather_cache = Yii::app()->db->createCommand($sql)
-                    ->bindParam(':city', $city, PDO::PARAM_STR)
-                    ->bindParam(':provider', $provider, PDO::PARAM_STR)
-                    ->bindParam(':today', $today, PDO::PARAM_STR)
-                    ->queryAll();
-
-                Yii::app()->cache->set("find".$ip, $weather_cache, 86400);
+                $weather_cache = Weather::model()->findByCity($today, $city, $provider);
+                Yii::app()->cache->set("find".$city.$provider, $weather_cache, 86400);
             }
         }
 
@@ -241,58 +192,26 @@ class WeatherController extends Controller
      * @param $provider провайдер
      */
     public function actionForecast(){
-		$pr = ["ya" => 1, "owm" => 2,]; //Провайдер
-        $dayofpart = [4 => 'night', 1 => 'morning', 2 => 'day', 3 => 'evening'];
+		$pr = ["ya" => 1, "owm" => 2, "wund" => 3]; //Провайдер
 		$city = Yii::app()->request->getQuery('city');
         $lat = Yii::app()->request->getQuery('lat');
         $lon = Yii::app()->request->getQuery('lon');
 		$provider = Yii::app()->request->getQuery('pr', "ya");
 		$provider = strtr($provider, $pr);
 		$today = date("Y-m-d");
-
-        $out_from_db = "name_ru as city, date_forecast as date, partofday, temp, humidity,
-	                    pressure, latitude, longitude, wd.description, wind_speed, precipitation as weather, pr.name as provider";
-
-        $join = "weatherstation ws
-                    LEFT JOIN city c ON c.id = ws.city_id
-                    LEFT JOIN weather w ON w.station_id = ws.id
-                    LEFT JOIN provider pr ON w.provider_id = pr.id
-                    LEFT JOIN wind_deg wd ON w.wind_deg = wd.id";
 		
 		if(isset($city)) {
             $city = mb_convert_case($city, MB_CASE_LOWER, "UTF-8");
             $weather_cache = Yii::app()->cache->get("forecast".$city.$provider);
-
             if($weather_cache == false){
-                $sql = "SELECT $out_from_db
-					FROM $join
-					WHERE (c.name_en LIKE :city OR c.name_ru LIKE :city)
-					        AND date_forecast >= :today AND provider_id = :provider
-					ORDER BY date_forecast, partofday";
-
-                $weather_cache = Yii::app()->db->createCommand($sql)
-                    ->bindParam(':city', $city, PDO::PARAM_STR)
-                    ->bindParam(':provider', $provider, PDO::PARAM_STR)
-                    ->bindParam(':today', $today, PDO::PARAM_STR)
-                    ->queryAll();
+                $weather_cache = Weather::model()->findAllByCity($today, $city, $provider);
                 Yii::app()->cache->set("forecast".$city.$provider, $weather_cache, 86400);
             }
         }
-
         if(isset($lat) && isset($lon)){
             $weather_cache = Yii::app()->cache->get("forecast".$lat.$lon.$provider);
             if($weather_cache == false){
-                $sql = "SELECT $out_from_db FROM $join
-					WHERE ws.latitude = :lat AND ws.longitude = :lon
-					AND date_forecast >= :today AND provider_id = :provider
-					ORDER BY date_forecast";
-
-                $weather_cache = Yii::app()->db->createCommand($sql)
-                    ->bindParam(':lat', $lat, PDO::PARAM_STR)
-                    ->bindParam(':lon', $lon, PDO::PARAM_STR)
-                    ->bindParam(':provider', $provider, PDO::PARAM_STR)
-                    ->bindParam(':today', $today, PDO::PARAM_STR)
-                    ->queryAll();
+                $weather_cache = Weather::model()->findAllByCoordinates($today, $lat, $lon, $provider);
                 Yii::app()->cache->set("forecast".$lat.$lon.$provider, $weather_cache, 86400);
             }
 
@@ -301,20 +220,6 @@ class WeatherController extends Controller
 		$json = JSON::encode($weather_cache);
         printf("callback(%s)", $json);		
 	}
-
-    public function actionWeather(){
-//        $weather_cache = Yii::app()->cache->get("weathers");
-//        if($weather_cache == false){
-            $sql = "SELECT DISTINCT precipitation FROM weather";
-
-            $weather_cache = Yii::app()->db->createCommand($sql)->queryAll();
-//            Yii::app()->cache->set("weathers", 86400);
-//       }
-
-        header('Content-Type: application/json');
-        $json = JSON::encode($weather_cache);
-        printf("callback(%s)", $json);
-    }
 
 	/**
 	 * Управление всеми моделями
