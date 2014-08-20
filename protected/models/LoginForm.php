@@ -3,7 +3,7 @@
 /**
  * LoginForm class.
  * LoginForm is the data structure for keeping
- * user login form data. It is used by the 'login' action of 'SiteController'.
+ * user login form data. It is used by the 'login' action of 'WeatherController'.
  */
 class LoginForm extends CFormModel
 {
@@ -36,7 +36,7 @@ class LoginForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
-			'rememberMe'=>'Remember me next time',
+			'rememberMe'=>'Запомни меня',
 		);
 	}
 
@@ -50,7 +50,7 @@ class LoginForm extends CFormModel
 		{
 			$this->_identity=new UserIdentity($this->username,$this->password);
 			if(!$this->_identity->authenticate())
-				$this->addError('password','Incorrect username or password.');
+				$this->addError('password','Неверный логин или пароль');
 		}
 	}
 

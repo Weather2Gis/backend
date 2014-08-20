@@ -9,19 +9,17 @@ return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Погода',
     'defaultController'=>'weather',
+    'language' => 'ru',
+    'sourceLanguage' => 'en',
 
-	// preloading 'log' component
 	'preload'=>array('log'),
 
-	// autoloading model and component classes
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
 	),
 
 	'modules'=>array(
-		// uncomment the following to enable the Gii tool
-
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'1234',
@@ -36,6 +34,7 @@ return array(
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
+            'loginUrl'=>array('weather/login'),
 		),
 		// uncomment the following to enable URLs in path-format
         /*
@@ -48,25 +47,28 @@ return array(
 			),
 		),*/
 
-        /*
-		'db'=>array(
-			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-		),
-        */
-		// uncomment the following to use a MySQL database
-
+        'cache'=>array(
+            'class'=>'system.caching.CDbCache',
+            'cacheTableName' => 'cache',
+            'autoCreateCacheTable' => true,
+            'connectionID' => 'db',
+        ),
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=weather',
 			'emulatePrepare' => true,
 			'username' => 'root',
-			'password' => '123',
+			'password' => 'user',
 			'charset' => 'utf8',
 		),
 
+        'coreMessages'=>array(
+            'basePath'=>'protected/messages',
+        ),
+
 		'errorHandler'=>array(
-			// use 'site/error' action to display errors
-			'errorAction'=>'site/error',
+			'errorAction'=>'weather/error',
 		),
+
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
@@ -88,6 +90,6 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		'adminEmail'=>'pavlik.1@mail.ru',
 	),
 );

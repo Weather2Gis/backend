@@ -8,6 +8,7 @@
  * @property integer $city_id
  * @property double $longitude
  * @property double $latitude
+ * @property string $point
  *
  * The followings are the available model relations:
  * @property Weather[] $weathers
@@ -34,9 +35,10 @@ class Weatherstation extends CActiveRecord
 			array('city_id, longitude, latitude', 'required'),
 			array('city_id', 'numerical', 'integerOnly'=>true),
 			array('longitude, latitude', 'numerical'),
+			array('point', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, city_id, longitude, latitude', 'safe', 'on'=>'search'),
+			array('id, city_id, longitude, latitude, point', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,6 +65,7 @@ class Weatherstation extends CActiveRecord
 			'city_id' => 'City',
 			'longitude' => 'Longitude',
 			'latitude' => 'Latitude',
+			'point' => 'Point',
 		);
 	}
 
@@ -88,6 +91,7 @@ class Weatherstation extends CActiveRecord
 		$criteria->compare('city_id',$this->city_id);
 		$criteria->compare('longitude',$this->longitude);
 		$criteria->compare('latitude',$this->latitude);
+		$criteria->compare('point',$this->point,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

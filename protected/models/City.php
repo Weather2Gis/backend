@@ -7,6 +7,7 @@
  * @property integer $id
  * @property string $name_en
  * @property string $name_ru
+ * @property integer $population
  *
  * The followings are the available model relations:
  * @property Weatherstation[] $weatherstations
@@ -30,10 +31,11 @@ class City extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name_en, name_ru', 'required'),
+			array('population', 'numerical', 'integerOnly'=>true),
 			array('name_en, name_ru', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name_en, name_ru', 'safe', 'on'=>'search'),
+			array('id, name_en, name_ru, population', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,6 +60,7 @@ class City extends CActiveRecord
 			'id' => 'ID',
 			'name_en' => 'Name En',
 			'name_ru' => 'Name Ru',
+			'population' => 'Population',
 		);
 	}
 
@@ -82,6 +85,7 @@ class City extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name_en',$this->name_en,true);
 		$criteria->compare('name_ru',$this->name_ru,true);
+		$criteria->compare('population',$this->population);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

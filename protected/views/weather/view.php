@@ -2,17 +2,11 @@
 /* @var $this WeatherController */
 /* @var $model Weather */
 
-$this->breadcrumbs=array(
-	'Weathers'=>array('index'),
-	$model->id,
-);
-
 $this->menu=array(
-	array('label'=>'Список информации по погоде', 'url'=>array('list')),
-	array('label'=>'Создать информацию по погоде', 'url'=>array('create')),
-	array('label'=>'Обновить информацию по погоде', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Удалить информацию по погоде', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Управление информацией по погоде', 'url'=>array('admin')),
+    array('label'=>'Управление погодными данными', 'url'=>array('admin')),
+	array('label'=>'Создать погодные данные', 'url'=>array('create')),
+	array('label'=>'Обновить погодные данные', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Удалить погодные данные', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Вы уверены, что хотите удалить данные?')),
 );
 ?>
 
