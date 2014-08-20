@@ -47,8 +47,8 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'precipitation_id'); ?>
-		<?php echo $form->textField($model,'precipitation_id'); ?>
+		<?php echo $form->label($model,'precipitation'); ?>
+		<?php echo $form->textField($model,'precipitation'); ?>
 	</div>
 
 	<div class="row">

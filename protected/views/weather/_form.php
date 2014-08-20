@@ -56,9 +56,9 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'precipitation_id'); ?>
-		<?php echo $form->textField($model,'precipitation_id'); ?>
-		<?php echo $form->error($model,'precipitation_id'); ?>
+		<?php echo $form->labelEx($model,'precipitation'); ?>
+		<?php echo $form->textField($model,'precipitation'); ?>
+		<?php echo $form->error($model,'precipitation'); ?>
 	</div>
 
 	<div class="row">

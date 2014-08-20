@@ -28,7 +28,7 @@ class WeatherController extends Controller
 	{
 		return array(
 			array('allow',
-				'actions'=>array('find', 'forecast', 'login', 'error', 'logout', 'info'),
+				'actions'=>array('find', 'forecast', 'login', 'error', 'logout', 'info', 'weather'),
 				'users'=>array('*'),
 			),
 			array('allow',
@@ -301,6 +301,20 @@ class WeatherController extends Controller
 		$json = JSON::encode($weather_cache);
         printf("callback(%s)", $json);		
 	}
+
+    public function actionWeather(){
+//        $weather_cache = Yii::app()->cache->get("weathers");
+//        if($weather_cache == false){
+            $sql = "SELECT DISTINCT precipitation FROM weather";
+
+            $weather_cache = Yii::app()->db->createCommand($sql)->queryAll();
+//            Yii::app()->cache->set("weathers", 86400);
+//       }
+
+        header('Content-Type: application/json');
+        $json = JSON::encode($weather_cache);
+        printf("callback(%s)", $json);
+    }
 
 	/**
 	 * Управление всеми моделями
