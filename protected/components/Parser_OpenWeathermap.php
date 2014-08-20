@@ -8,10 +8,25 @@
 
 
 
-class Parser_OpenWeathermap {
+class Parser_OpenWeathermap
+{
+
+    /**
+     * Путь покоторому запрашиваем данные
+     */
+    public static $url = "http://api.openweathermap.org/data/2.5/forecast?q=%%name%%&units=metric";
+
+    /**
+     * Возвращает путь по которому запрашиваем данные
+     */
+    protected static function getUrl($name)
+    {
+        return str_replace('%%name%%', $name, self::$url);
+    }
 
     /**
      * Собирает данные с API OpenWeatherMap
+     *
      * @param $city город для которого собираются данные
      * @return array|null массив с данными о погоде
      */
@@ -36,37 +51,37 @@ class Parser_OpenWeathermap {
             13 => 8, 14 => 8
         ];
 
-		$url = "http://api.openweathermap.org/data/2.5/forecast?q=" . $city->name_en . "&units=metric";
-		$json = self::getWeatherForCity($url);
-        if(!empty($json)){
-            if(!empty($json['list'])){
-                foreach($json['list'] as $time){
-                    $date = explode(" ", $time['dt_txt'])[0];
-                    $partofday = explode(" ", $time['dt_txt'])[1];
-                    if(array_key_exists($partofday, $list)){
-                        $array[] = [
-                            'date_forecast' => (string)$date,
-                            'partofday'     => (int)$list[$partofday],
-                            'temp'          => (int)ceil($time['main']['temp']),
-                            'wind_speed'    => (float)$time['wind']['speed'],
-                            'wind_deg'      => (int)$degs[ceil($time['wind']['deg'] / 22.5)],
-                            'humidity'      => (int)$time['main']['humidity'],
-                            'pressure'      => (int)ceil($time['main']['pressure'] * 0.75),
-                            'precipitation' => (string)strtr($time['weather']['0']['main'] , $map_weather)
-                        ];
-                    }
-                }
-            }else{
-                return null;
-            }
-        }else{
+        $url = self::getUrl($city->name_en);
+
+        $json = self::getWeatherForCity($url);
+
+        if(empty($json) || empty($json['list'])) {
             return null;
         }
+
+        foreach($json['list'] as $time){
+            $date = explode(" ", $time['dt_txt'])[0];
+            $partofday = explode(" ", $time['dt_txt'])[1];
+            if(array_key_exists($partofday, $list)){
+                $array[] = [
+                    'date_forecast' => (string)$date,
+                    'partofday'     => (int)$list[$partofday],
+                    'temp'          => (int)ceil($time['main']['temp']),
+                    'wind_speed'    => (float)$time['wind']['speed'],
+                    'wind_deg'      => (int)$degs[ceil($time['wind']['deg'] / 22.5)],
+                    'humidity'      => (int)$time['main']['humidity'],
+                    'pressure'      => (int)ceil($time['main']['pressure'] * 0.75),
+                    'precipitation' => (string)strtr($time['weather']['0']['main'] , $map_weather)
+                ];
+            }
+        }
+
         return $array;
     }
 
     /**
      * Собирает данные с сайта
+     *
      * @param $url адрес сайта
      * @return mixed|null массив с данными
      */
@@ -94,6 +109,3 @@ class Parser_OpenWeathermap {
         return $json;
     }
 }
-
-
-

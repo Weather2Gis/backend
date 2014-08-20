@@ -30,15 +30,12 @@ class WUParser extends CComponent
             13 => 8, 14 => 8
         ];
 
-        $url = 'http://api.wunderground.com/api/abf440f8782645dc/hourly10day/forecast/lang:RU/q/Россия/'.$cityName.'.xml';
+        $url = 'http://api.wunderground.com/api/abf440f8782645dc/hourly10day/forecast/lang:RU/q/Россия/' . $cityName . '.xml';
         $xml = simplexml_load_file($url);
 
         if(isset($xml->hourly_forecast->forecast->FCTTIME->pretty)) {
             foreach ($xml->hourly_forecast as $hourly_forecast) {
                 foreach ($hourly_forecast as $data) {
-                    /**
-                     * @var $data SimpleXMLElement
-                     */
 
                     if (!isset($list[(string)$data->FCTTIME->hour])) continue;
 

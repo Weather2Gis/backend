@@ -4,7 +4,7 @@
  * User: man
  */
 
-/*
+
 class ParserOpenWeatherTest extends CDbTestCase
 {
 
@@ -64,4 +64,12 @@ class ParserOpenWeatherTest extends CDbTestCase
 //        $this->assertInternalType('string', $ya['0']['precipitation']);
 //    }
 
+}
+
+class Parser_OpenWeathermap_test extends Parser_OpenWeathermap
+{
+    private static function getWeatherForCity($url)
+    {
+        return file_get_contents($url);
+    }
 }

@@ -10,10 +10,14 @@
 
 interface IProvider{
 
-    public  function parse();
-
-    public function process();
-
-    public function save();
+    /**
+     * <code>
+     * $return = [
+     *   'temp' int
+     * ];
+     * </code>
+     * @return array
+     */
+    public static function parse($city);
 
 }
