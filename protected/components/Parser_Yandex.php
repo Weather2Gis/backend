@@ -16,7 +16,7 @@ class Parser_Yandex
     /**
      * Собирает данные с API Yandex
      * @param $city_id индекс города
-     * @return array массив с данными
+     * @return array массив с данными о погоде
      */
     public static function parse($city_id)
     {

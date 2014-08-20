@@ -11,7 +11,7 @@ class Parser_OpenWeathermap {
     /**
      * Собирает данные с API OpenWeatherMap
      * @param $city город для которого собираются данные
-     * @return array|null массив с данными
+     * @return array|null массив с данными о погоде
      */
     public static function parse($city)
     {

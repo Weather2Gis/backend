@@ -8,6 +8,10 @@
 
 class WUParser extends CComponent
 {
+    /**Собирает данные с api wundeground
+     * @param $cityName имя города для которого собираются данные
+     * @return array|null массив с данными о погоде
+     */
     public static function parse($cityName)
     {
         //list : утро, день, вечер, ночь
