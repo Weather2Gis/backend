@@ -1,37 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="weather" default="database">
+<project name="weather" default="createDir">
     <property name="src_dir" value="protected/" override="false"/>
 
+    <exec checkreturn="true" command="memcached -help" outputProperty="out" />
+    <exec command="git submodule init" />
+    <exec command="git submodule update" />
 
     <target name="createDir" description="Create dir runtime and assets">
         <echo>Create dir...</echo>
-        <mkdir dir="/assets/" />
+        <mkdir dir="assets/" />
         <mkdir dir="${src_dir}/runtime/" />
     </target>
 
     <target name="database" description="Configure database">
-        <input propertyname="hostname" defaultValue="127.0.0.1"
-               promptChar="?">Enter the hostname of db.</input>
-        <input propertyname="database" defaultValue="database"
-               promptChar="?">Enter the name of db.</input>
-        <input propertyname="username" defaultValue="root"
-               promptChar="?">Enter username to access to the db.</input>
-        <input propertyname="password" defaultValue="root"
-               promptChar="?">Enter password to access to the db.</input>
-        <input propertyname="giipassword" defaultValue="giipassword"
-               promptChar="?">Enter password to access to gii.</input>
-        <copy file="protected/config/main.php.dist"
-              tofile="protected/config/main.php" overwrite="true">
-            <filterchain>
-                <replacetokens begintoken="[[" endtoken="]]">
-                    <token key="hostname" value="${hostname}" />
-                    <token key="database" value="${database}" />
-                    <token key="username" value="${username}" />
-                    <token key="password" value="${password}" />
-                    <token key="giipassword" value="${giipassword}" />
-                </replacetokens>
-            </filterchain>
-        </copy>
+        <if>
+            <equals arg1="${out}" arg2="" />
+            <then>
+                <exec command="sudo apt-get install memcached" />
+                <exec command="sudo service php5-fpm restart" />
+            </then>
+            <else>
+                <input propertyname="hostname" defaultValue="127.0.0.1"
+                       promptChar="?">Enter the hostname of db.</input>
+                <input propertyname="database" defaultValue="database"
+                       promptChar="?">Enter the name of db.</input>
+                <input propertyname="username" defaultValue="root"
+                       promptChar="?">Enter username to access to the db.</input>
+                <input propertyname="password" defaultValue="root"
+                       promptChar="?">Enter password to access to the db.</input>
+                <input propertyname="giipassword" defaultValue="giipassword"
+                       promptChar="?">Enter password to access to gii.</input>
+                <copy file="protected/config/main.php.dist"
+                      tofile="protected/config/main.php" overwrite="true">
+                    <filterchain>
+                        <replacetokens begintoken="[[" endtoken="]]">
+                            <token key="hostname" value="${hostname}" />
+                            <token key="database" value="${database}" />
+                            <token key="username" value="${username}" />
+                            <token key="password" value="${password}" />
+                            <token key="giipassword" value="${giipassword}" />
+                        </replacetokens>
+                    </filterchain>
+                </copy>
+            </else>
+        </if>
     </target>
-
 </project>
