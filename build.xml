@@ -2,7 +2,7 @@
 <project name="weather" default="createDir">
     <property name="src_dir" value="protected/" override="false"/>
 
-    <exec checkreturn="true" command="which memcached > /dev/null && echo 'true' || echo 'false'" outputProperty="out" />
+    <exec checkreturn="true" command="memcached -help" outputProperty="out" />
     <exec command="git submodule init" />
     <exec command="git submodule update" />
 
