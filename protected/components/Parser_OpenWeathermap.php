@@ -8,7 +8,7 @@
 
 
 
-class Parser_OpenWeathermap
+class Parser_OpenWeathermap implements IProvider
 {
 
     /**
