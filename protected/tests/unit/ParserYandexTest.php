@@ -7,20 +7,12 @@
 class ParserYandexTest extends CDbTestCase
 {
 
-    protected function setUpBeforeClass()
-    {
-        // /test/units/testData/yandex/29634.xml
-        // /test/units/testData/yandex/27612.xml
-        // /test/units/testData/yandex/28698.xml
-        Parse_Yandex::$url = '/test/units/testData/yandex/';
-    }
-
     public function providerCity()
     {
         return [
-            ['Новосибирск', 29634],
-            ['Омск', 27612],
-            ['Москва', 28698],
+            [29634],
+            [27612],
+            [28698],
         ];
     }
 
@@ -28,13 +20,13 @@ class ParserYandexTest extends CDbTestCase
      * Тестируем типы
      * @dataProvider providerCity
      */
-    public function testType($name, $id)
+    public function testType($id)
     {
+        Parser_Yandex::$url = 'http://export.yandex.ru/weather-ng/forecasts/';
         $ya = Parser_Yandex::parse($id);
 
         $data = $ya[0];
 
-        $this->assertEquals($name, $data['name']);
         $this->assertInternalType('string', $data['date_forecast']);
         $this->assertInternalType('int', $data['partofday']);
         $this->assertInternalType('int', $data['temp']);
@@ -48,65 +40,68 @@ class ParserYandexTest extends CDbTestCase
     /**
      * @dataProvider providerCity
      */
-    public function testCountData($name, $id)
+    public function testCountData($id)
     {
-        $data = Parse_Yandex::parse($id);
+        Parser_Yandex::$url = 'http://export.yandex.ru/weather-ng/forecasts/';
+        $data = Parser_Yandex::parse($id);
 
-        // проверяем на сколько дней прогноз
-        $this->assertEquals(count($data), 10);
+
+        $this->assertEquals(count($data), 40);
 
         // скидываем первый день
         next($data);
 
         foreach ($data as $value) {
-            // проверяем что в каждом дне 4 прогноза
-            $this->assertEquals(count($value), 4);
+
+            $this->assertEquals(count($value), 9);
         }
     }
 
     public function testValidData()
     {
-        Parse_Yandex::$url = '/test/units/testData/yandex/validaData/';
-        $data = Parse_Yandex::parse(29634);
+        Parser_Yandex::$url = 'http://export.yandex.ru/weather-ng/forecasts/';
+        $data = Parser_Yandex::parse(29634);
 
         $data = reset($data);
 
         $this->assertEquals('Новосибирск', $data['name']);
 
         $this->assertInternalType('string', $data['date_forecast']);
-        $this->assertEquals($data['date_forecast'], '2014-08-20');
+        $this->assertEquals($data['date_forecast'], '2014-08-21');
 
         $this->assertInternalType('int', $data['partofday']);
-        $this->assertEquals($data['partofday'], 2);
+        $this->assertEquals($data['partofday'], 1);
 
         $this->assertInternalType('int', $data['temp']);
-        $this->assertEquals($data['temp'], 23);
+        $this->assertEquals($data['temp'], 12);
 
         $this->assertInternalType('float', $data['wind_speed']);
-        $this->assertEquals($data['wind_speed'], 3);
+        $this->assertEquals($data['wind_speed'], 2.3);
 
         $this->assertInternalType('int', $data['humidity']);
-//        $this->assertEquals($data['humidity']);
+        $this->assertEquals($data['humidity'], 73);
 
         $this->assertInternalType('int', $data['pressure']);
-        $this->assertEquals($data['pressure'], 234);
+        $this->assertEquals($data['pressure'], 755);
 
         $this->assertInternalType('int', $data['wind_deg']);
         $this->assertEquals($data['wind_deg'], 1);
 
         $this->assertInternalType('string', $data['precipitation']);
-        $this->assertEquals($data['precipitation'], 'qwe');
+        $this->assertEquals($data['precipitation'], 'переменная облачность');
     }
 
-    public function testFileNotFound()
-    {
-        Parse_Yandex::$url = '/test/units/testData/yandex/';
-        $data = Parse_Yandex::parse(123123);        
 
-        $this->assertEquals($data, false);
+//    public function testFileNotFound()
+//    {
+//        Parser_Yandex::$url = 'http://export.yandex.ru/weather-ng/forecasts/';
+//        $data = Parser_Yandex::parse(123123);
+//
+//        $this->assertEquals($data, false);
+//
+//        $errors = Parser_Yandex::$errors;
+//
+//        $this->assertEquals($errors, 'HTTP request failed! HTTP/1.0 404 Not Found');
+//    }
 
-        $errors = Parse_Yandex::$errors;
-
-        $this->assertEquals($errors, '');
-    }
 }

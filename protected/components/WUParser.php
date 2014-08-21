@@ -8,12 +8,28 @@
 
 
 
-class WUParser extends CComponent
+class WUParser extends CComponent implements IProvider
 {
+
+    /**
+     * Путь покоторому запрашиваем данные
+     */
+    public static $url = "http://api.wunderground.com/api/abf440f8782645dc/hourly10day/forecast/lang:RU/q/Россия/";
+
+    /**
+     * Возвращает путь по которому запрашиваем данные
+     */
+    protected static function getUrl($cityName)
+    {
+        return self::$url . $cityName . '.xml';
+    }
+
+
     /**Собирает данные с api wundeground
      * @param $cityName имя города для которого собираются данные
      * @return array|null массив с данными о погоде
      */
+
     public static function parse($cityName)
     {
         //list : утро, день, вечер, ночь
@@ -30,7 +46,8 @@ class WUParser extends CComponent
             13 => 8, 14 => 8
         ];
 
-        $url = 'http://api.wunderground.com/api/abf440f8782645dc/hourly10day/forecast/lang:RU/q/Россия/' . $cityName . '.xml';
+        $url = self::getUrl($cityName);
+
         $xml = simplexml_load_file($url);
 
         if(isset($xml->hourly_forecast->forecast->FCTTIME->pretty)) {

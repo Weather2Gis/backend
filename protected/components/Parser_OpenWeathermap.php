@@ -51,7 +51,7 @@ class Parser_OpenWeathermap
             13 => 8, 14 => 8
         ];
 
-        $url = self::getUrl($city->name_en);
+        $url = self::getUrl($city);
 
         $json = self::getWeatherForCity($url);
 

@@ -8,6 +8,9 @@
 
 class Parser_Yandex implements IProvider
 {
+
+    public static $errors;
+
     const MORNING = 0;
     const DAY = 1;
     const EVENING = 2;
@@ -38,7 +41,7 @@ class Parser_Yandex implements IProvider
         $url = self::getUrl($city_id);
 
         libxml_use_internal_errors(false);
-        
+
         $xml = simplexml_load_file($url);
 
         if (!$xml) {
