@@ -180,7 +180,7 @@ class Weather extends CActiveRecord
             'pressure'=> $model['pressure'],
             'latitude'=> $model->station->latitude,
             'longitude'=> $model->station->longitude,
-            'precipitation'=> mb_convert_case($model['precipitation'], MB_CASE_TITLE , "UTF-8"),
+            'precipitation'=> $model['precipitation'],
             'provider'=> $model->provider->name,
         ];
 
@@ -216,7 +216,7 @@ class Weather extends CActiveRecord
             'pressure'=> $model['pressure'],
             'latitude'=> $model->station->latitude,
             'longitude'=> $model->station->longitude,
-            'precipitation'=> mb_convert_case($model['precipitation'], MB_CASE_TITLE , "UTF-8"),
+            'precipitation'=> $model['precipitation'],
             'provider'=> $model->provider->name,
         ];
 
@@ -259,7 +259,7 @@ class Weather extends CActiveRecord
                 'pressure'=> $model['pressure'],
                 'latitude'=> $model->station->latitude,
                 'longitude'=> $model->station->longitude,
-                'precipitation'=> mb_convert_case($model['precipitation'], MB_CASE_TITLE , "UTF-8"),
+                'precipitation'=> $model['precipitation'],
                 'provider'=> $model->provider->name,
             ];
         }
@@ -300,7 +300,7 @@ class Weather extends CActiveRecord
                 'wind_deg' => $model->windDeg->description,
                 'latitude'=> $model->station->latitude,
                 'longitude'=> $model->station->longitude,
-                'precipitation'=> mb_convert_case($model['precipitation'], MB_CASE_TITLE , "UTF-8"),
+                'precipitation'=> $model['precipitation'],
                 'provider'=> $model->provider->name,
             ];
         }
@@ -341,7 +341,7 @@ class Weather extends CActiveRecord
                 'wind_deg' => $model->windDeg->description,
                 'latitude'=> $model->station->latitude,
                 'longitude'=> $model->station->longitude,
-                'precipitation'=> mb_convert_case($model['precipitation'], MB_CASE_TITLE , "UTF-8"),
+                'precipitation'=> $model['precipitation'],
                 'provider'=> $model->provider->name,
             ];
         }
