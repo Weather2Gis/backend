@@ -6,7 +6,7 @@ class WeatherController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	//public $layout='//layouts/column2';
 
 	/**
 	 * @return массив action фильтров
@@ -136,7 +136,7 @@ class WeatherController extends Controller
      */
     public function actionFind()
     {
-		$pr = ["ya" => 1, "owm" => 2, "wund" => 3]; //Провайдер
+		$pr = ["ya" => 1, "ow" => 2, "wu" => 3]; //Провайдер
 
         $city = Yii::app()->request->getQuery('city');
         $lat = Yii::app()->request->getQuery('lat');
@@ -192,7 +192,7 @@ class WeatherController extends Controller
      * @param $provider провайдер
      */
     public function actionForecast(){
-		$pr = ["ya" => 1, "owm" => 2, "wund" => 3]; //Провайдер
+		$pr = ["ya" => 1, "ow" => 2, "wu" => 3]; //Провайдер
 		$city = Yii::app()->request->getQuery('city');
         $lat = Yii::app()->request->getQuery('lat');
         $lon = Yii::app()->request->getQuery('lon');
@@ -222,7 +222,7 @@ class WeatherController extends Controller
 	}
 
 	/**
-	 * Управление всеми моделями
+	 * Управление всеми моделью
 	 */
 	public function actionAdmin()
 	{

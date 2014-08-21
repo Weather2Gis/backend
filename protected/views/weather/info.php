@@ -14,6 +14,3 @@ $this->menu=array(
     <h2>Пример запросов на несколько дней вперед с временем суток</h2>
     <p>Поиск по городу: <pre>/?r=weather/forecast&city=Novosibirsk&pr=ya</pre></p>
     <p>Поиск по координатам: <pre>/?r=weather/forecast&lat=55.753676&lon=37.619899&pr=owm</pre></p>
-
-    <h2>Виды осадков</h2>
-    <p>/?r=weather/weather</p>

@@ -71,16 +71,16 @@ class Weather extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'date_forecast' => 'Date Forecast',
-			'partofday' => 'Partofday',
-			'temp' => 'Temp',
-			'humidity' => 'Humidity',
-			'pressure' => 'Pressure',
-			'wind_speed' => 'Wind Speed',
-			'wind_deg' => 'Wind Deg',
-			'station_id' => 'Station',
-			'provider_id' => 'Provider',
-			'precipitation' => 'Precipitation',
+			'date_forecast' => 'Дата',
+			'partofday' => 'Время суток',
+			'temp' => 'Температура',
+			'humidity' => 'Влажность',
+			'pressure' => 'Давление',
+			'wind_speed' => 'Скорость ветра',
+			'wind_deg' => 'Направление ветра',
+			'station_id' => 'Метеостация',
+			'provider_id' => 'Провайдер',
+			'precipitation' => 'Погода',
 		);
 	}
 
@@ -154,6 +154,13 @@ class Weather extends CActiveRecord
 		return parent::model($className);
 	}
 
+    /**
+     * Ищет погоду по городу для текущей даты и указанного провайдера
+     * @param $today дата для которой ищется погода
+     * @param $city город для которого ищется погода
+     * @param $provider провайдер для которого ищется погода
+     * @return array массив с результатом поиска
+     */
     public static function findByCity($today, $city, $provider){
         $criteria=new CDbCriteria;
         $criteria->alias = 'weather';
@@ -162,23 +169,32 @@ class Weather extends CActiveRecord
                                 AND `weather`.`date_forecast` = :today AND `weather`.`provider_id` = :provider";
         $criteria->params = array(':city'=>$city, ':provider'=>$provider, ':today'=>$today);
         $criteria->with = array('station', 'windDeg', 'provider', 'city');
-        $model = Weather::model()->find($criteria);
-
+        if(!($model = Weather::model()->find($criteria))){
+            throw new CHttpException(404,'Город не найден');
+        }
         $result[] = [
-            'city'=> mb_convert_case($model->city->name_ru, MB_CASE_LOWER , "UTF-8"),
+            'city'=> mb_convert_case($model->city->name_ru, MB_CASE_TITLE , "UTF-8"),
             'date'=> $model['date_forecast'],
             'temp'=> $model['temp'],
             'humidity'=> $model['humidity'],
             'pressure'=> $model['pressure'],
             'latitude'=> $model->station->latitude,
             'longitude'=> $model->station->longitude,
-            'precipitation'=> $model['precipitation'],
+            'precipitation'=> mb_convert_case($model['precipitation'], MB_CASE_TITLE , "UTF-8"),
             'provider'=> $model->provider->name,
         ];
 
         return $result;
     }
 
+    /**
+     * Ищет погоду по координатам для текущей даты и указанного провайдера
+     * @param $today дата для которой ищется погода
+     * @param $lat широта
+     * @param $lon долгота
+     * @param $provider провайдер для которого ищется погода
+     * @return array массив с результатом поиска
+     */
     public static function findByCoordinates($today, $lat, $lon, $provider){
         $criteria=new CDbCriteria;
         $criteria->alias = 'weather';
@@ -187,23 +203,36 @@ class Weather extends CActiveRecord
 					                AND date_forecast = :today AND provider_id = :provider";
         $criteria->params = array(':lat'=>$lat, ':lon'=>$lon, ':provider'=>$provider, ':today'=>$today);
         $criteria->with = array('station', 'windDeg', 'provider', 'city');
-        $model = Weather::model()->find($criteria);
+
+        if(!($model = Weather::model()->find($criteria))){
+            throw new CHttpException(404,'Город не найден');
+        }
 
         $result[] = [
-            'city'=> mb_convert_case($model->city->name_ru, MB_CASE_LOWER , "UTF-8"),
+            'city'=> mb_convert_case($model->city->name_ru, MB_CASE_TITLE , "UTF-8"),
             'date'=> $model['date_forecast'],
             'temp'=> $model['temp'],
             'humidity'=> $model['humidity'],
             'pressure'=> $model['pressure'],
             'latitude'=> $model->station->latitude,
             'longitude'=> $model->station->longitude,
-            'precipitation'=> $model['precipitation'],
+            'precipitation'=> mb_convert_case($model['precipitation'], MB_CASE_TITLE , "UTF-8"),
             'provider'=> $model->provider->name,
         ];
 
         return $result;
     }
 
+    /**
+     * Ищет погоду в заданном диапазоне широт для текущей даты и указанного провайдера
+     * @param $today дата для которой ищется погода
+     * @param $lat_top широта левой верхней точки
+     * @param $lon_top долгота левой верхней точки
+     * @param $lat_bottom широта правой нижней точки
+     * @param $lon_bottom долгота правой нижней точки
+     * @param $provider провайдер для которого ищется погода
+     * @return array
+     */
     public static function findByRect($today, $lat_top, $lon_top, $lat_bottom, $lon_bottom, $provider){
         $criteria=new CDbCriteria;
         $criteria->alias = 'weather';
@@ -216,17 +245,21 @@ class Weather extends CActiveRecord
         $criteria->limit = '30';
         $criteria->params = array(':provider'=>$provider, ':today'=>$today);
         $criteria->with = array('station', 'windDeg', 'provider', 'city');
-        $models = Weather::model()->findAll($criteria);
+
+        if(!($models = Weather::model()->findAll($criteria))){
+            throw new CHttpException(404,'Город не найден');
+        }
+
         foreach($models as $model){
             $result[] = [
-                'city'=> mb_convert_case($model->city->name_ru, MB_CASE_LOWER , "UTF-8"),
+                'city'=> mb_convert_case($model->city->name_ru, MB_CASE_TITLE , "UTF-8"),
                 'date'=> $model['date_forecast'],
                 'temp'=> $model['temp'],
                 'humidity'=> $model['humidity'],
                 'pressure'=> $model['pressure'],
                 'latitude'=> $model->station->latitude,
                 'longitude'=> $model->station->longitude,
-                'precipitation'=> $model['precipitation'],
+                'precipitation'=> mb_convert_case($model['precipitation'], MB_CASE_TITLE , "UTF-8"),
                 'provider'=> $model->provider->name,
             ];
         }
@@ -234,54 +267,81 @@ class Weather extends CActiveRecord
         return $result;
     }
 
+    /**
+     * Ищет погоду по городу на ближайшие дни от указанной даты и указанного провайдера
+     * @param $today дата для которой ищется погода
+     * @param $city город для которого ищется погода
+     * @param $provider провайдер для которого ищется погода
+     * @return array массив с результатом поиска
+     */
     public static function findAllByCity($today, $city, $provider){
         $criteria=new CDbCriteria;
         $criteria->alias = 'weather';
-        $criteria->select = 'date_forecast, partofday, temp, humidity, pressure, precipitation';
+        //$criteria->select = 'date_forecast, partofday, temp, humidity, pressure, precipitation';
         $criteria->condition = "(`city`.`name_en` LIKE :city OR `city`.`name_ru` LIKE :city)
                                 AND `weather`.`date_forecast` >= :today AND `weather`.`provider_id` = :provider";
         $criteria->params = array(':city'=>$city, ':provider'=>$provider, ':today'=>$today);
         $criteria->order = 'date_forecast ASC, partofday ASC';
         $criteria->with = array('station', 'windDeg', 'provider', 'city');
-        $models = Weather::model()->findAll($criteria);
+
+        if(!($models = Weather::model()->findAll($criteria))){
+            throw new CHttpException(404,'Город не найден');
+        }
+
         foreach($models as $model){
             $result[] = [
-                'city'=> mb_convert_case($model->city->name_ru, MB_CASE_LOWER , "UTF-8"),
+                'city'=> mb_convert_case($model->city->name_ru, MB_CASE_TITLE , "UTF-8"),
                 'date'=> $model['date_forecast'],
                 'partofday'=> $model['partofday'],
                 'temp'=> $model['temp'],
                 'humidity'=> $model['humidity'],
                 'pressure'=> $model['pressure'],
+                'wind_speed'=> $model['wind_speed'],
+                'wind_deg' => $model->windDeg->description,
                 'latitude'=> $model->station->latitude,
                 'longitude'=> $model->station->longitude,
-                'precipitation'=> $model['precipitation'],
+                'precipitation'=> mb_convert_case($model['precipitation'], MB_CASE_TITLE , "UTF-8"),
                 'provider'=> $model->provider->name,
             ];
         }
         return $result;
     }
 
+    /**
+     * Ищет погоду по координатам на ближайшие дни от указанной даты и указанного провайдера
+     * @param $today дата для которой ищется погода
+     * @param $lat широта
+     * @param $lon долгота
+     * @param $provider провайдер для которого ищется погода
+     * @return array массив с результатом поиска
+     */
     public static function findAllByCoordinates($today, $lat, $lon, $provider){
         $criteria=new CDbCriteria;
         $criteria->alias = 'weather';
-        $criteria->select = 'date_forecast, partofday, temp, humidity, pressure, precipitation';
+        //$criteria->select = 'date_forecast, partofday, temp, humidity, pressure, precipitation';
         $criteria->condition = "station.latitude = :lat AND station.longitude = :lon
 					                AND date_forecast >= :today AND provider_id = :provider";
         $criteria->params = array(':lat'=>$lat, ':lon'=>$lon, ':provider'=>$provider, ':today'=>$today);
         $criteria->order = 'date_forecast, partofday';
         $criteria->with = array('station', 'windDeg', 'provider', 'city');
-        $models = Weather::model()->findAll($criteria);
+
+        if(!($models = Weather::model()->findAll($criteria))){
+            throw new CHttpException(404,'Город не найден');
+        }
+
         foreach($models as $model){
             $result[] = [
-                'city'=> mb_convert_case($model->city->name_ru, MB_CASE_LOWER , "UTF-8"),
+                'city'=> mb_convert_case($model->city->name_ru, MB_CASE_TITLE , "UTF-8"),
                 'date'=> $model['date_forecast'],
                 'partofday'=> $model['partofday'],
                 'temp'=> $model['temp'],
                 'humidity'=> $model['humidity'],
                 'pressure'=> $model['pressure'],
+                'wind_speed'=> $model['wind_speed'],
+                'wind_deg' => $model->windDeg->description,
                 'latitude'=> $model->station->latitude,
                 'longitude'=> $model->station->longitude,
-                'precipitation'=> $model['precipitation'],
+                'precipitation'=> mb_convert_case($model['precipitation'], MB_CASE_TITLE , "UTF-8"),
                 'provider'=> $model->provider->name,
             ];
         }
