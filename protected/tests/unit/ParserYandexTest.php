@@ -22,7 +22,7 @@ class ParserYandexTest extends CDbTestCase
      */
     public function testType($id)
     {
-        Parser_Yandex::$url = 'http://export.yandex.ru/weather-ng/forecasts/';
+        Parser_Yandex::$url = 'unit/testData/yandex/';
         $ya = Parser_Yandex::parse($id);
 
         $data = $ya[0];
@@ -42,7 +42,7 @@ class ParserYandexTest extends CDbTestCase
      */
     public function testCountData($id)
     {
-        Parser_Yandex::$url = 'http://export.yandex.ru/weather-ng/forecasts/';
+        Parser_Yandex::$url = 'unit/testData/yandex/';
         $data = Parser_Yandex::parse($id);
 
 
@@ -59,7 +59,7 @@ class ParserYandexTest extends CDbTestCase
 
     public function testValidData()
     {
-        Parser_Yandex::$url = 'http://export.yandex.ru/weather-ng/forecasts/';
+        Parser_Yandex::$url = 'unit/testData/yandex/';
         $data = Parser_Yandex::parse(29634);
 
         $data = reset($data);
@@ -73,13 +73,13 @@ class ParserYandexTest extends CDbTestCase
         $this->assertEquals($data['partofday'], 1);
 
         $this->assertInternalType('int', $data['temp']);
-        $this->assertEquals($data['temp'], 12);
+        $this->assertEquals($data['temp'], 11);
 
         $this->assertInternalType('float', $data['wind_speed']);
         $this->assertEquals($data['wind_speed'], 2.3);
 
         $this->assertInternalType('int', $data['humidity']);
-        $this->assertEquals($data['humidity'], 73);
+        $this->assertEquals($data['humidity'], 72);
 
         $this->assertInternalType('int', $data['pressure']);
         $this->assertEquals($data['pressure'], 755);
@@ -91,17 +91,5 @@ class ParserYandexTest extends CDbTestCase
         $this->assertEquals($data['precipitation'], 'переменная облачность');
     }
 
-
-//    public function testFileNotFound()
-//    {
-//        Parser_Yandex::$url = 'http://export.yandex.ru/weather-ng/forecasts/';
-//        $data = Parser_Yandex::parse(123123);
-//
-//        $this->assertEquals($data, false);
-//
-//        $errors = Parser_Yandex::$errors;
-//
-//        $this->assertEquals($errors, 'HTTP request failed! HTTP/1.0 404 Not Found');
-//    }
 
 }

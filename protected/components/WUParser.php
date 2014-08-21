@@ -10,7 +10,6 @@
 
 class WUParser extends CComponent implements IProvider
 {
-
     /**
      * Путь покоторому запрашиваем данные
      */
@@ -23,7 +22,6 @@ class WUParser extends CComponent implements IProvider
     {
         return self::$url . $cityName . '.xml';
     }
-
 
     /**Собирает данные с api wundeground
      * @param $cityName имя города для которого собираются данные

@@ -24,7 +24,7 @@ class WUParserTest extends CDbTestCase
      */
     public function testType($id)
     {
-        WUParser::$url = 'http://api.wunderground.com/api/abf440f8782645dc/hourly10day/forecast/lang:RU/q/Россия/';
+        WUParser::$url = 'unit/testData/Wunderground/';
         $ya = WUParser::parse($id);
 
         $data = $ya[0];
@@ -44,7 +44,7 @@ class WUParserTest extends CDbTestCase
      */
     public function testCountData($id)
     {
-        WUParser::$url = 'http://api.wunderground.com/api/abf440f8782645dc/hourly10day/forecast/lang:RU/q/Россия/';
+        WUParser::$url = 'unit/testData/Wunderground/';
         $data = WUParser::parse($id);
 
 
@@ -61,7 +61,7 @@ class WUParserTest extends CDbTestCase
 
     public function testValidData()
     {
-        WUParser::$url = 'http://api.wunderground.com/api/abf440f8782645dc/hourly10day/forecast/lang:RU/q/Россия/';
+        WUParser::$url = 'unit/testData/Wunderground/';
         $data = WUParser::parse('Новосибирск');
 
         $data = reset($data);
@@ -76,19 +76,19 @@ class WUParserTest extends CDbTestCase
         $this->assertEquals($data['temp'], 19);
 
         $this->assertInternalType('float', $data['wind_speed']);
-        $this->assertEquals($data['wind_speed'], 2.3);
+        $this->assertEquals($data['wind_speed'], 1.0);
 
         $this->assertInternalType('int', $data['humidity']);
-        $this->assertEquals($data['humidity'], 73);
+        $this->assertEquals($data['humidity'], 42);
 
         $this->assertInternalType('int', $data['pressure']);
-        $this->assertEquals($data['pressure'], 755);
+        $this->assertEquals($data['pressure'], 767);
 
         $this->assertInternalType('int', $data['wind_deg']);
-        $this->assertEquals($data['wind_deg'], 1);
+        $this->assertEquals($data['wind_deg'], 7);
 
         $this->assertInternalType('string', $data['precipitation']);
-        $this->assertEquals($data['precipitation'], 'переменная облачность');
+        $this->assertEquals($data['precipitation'], 'Переменная облачность');
     }
 
 

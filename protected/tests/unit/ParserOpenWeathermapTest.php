@@ -14,7 +14,7 @@ class ParserOpenWeatherTest extends CDbTestCase
     {
         return [
             ['Novosibirsk'],
-            ['Nytva'],
+            ['Moscow'],
             ['Kemerovo'],
         ];
     }
@@ -48,8 +48,6 @@ class ParserOpenWeatherTest extends CDbTestCase
         Parser_OpenWeathermap::$url = 'http://api.openweathermap.org/data/2.5/forecast?q=%%name%%&units=metric';
         $data = Parser_OpenWeathermap::parse($name);
 
-        $this->assertEquals(count($data), 15);
-
         // скидываем первый день
 
         foreach ($data as $value) {
@@ -63,6 +61,7 @@ class ParserOpenWeatherTest extends CDbTestCase
         Parser_OpenWeathermap::$url = 'http://api.openweathermap.org/data/2.5/forecast?q=%%name%%&units=metric';
         $data = Parser_OpenWeathermap::parse('Nytva');
         $data = $data[1];
+
         $this->assertInternalType('string', $data['date_forecast']);
         $this->assertEquals($data['date_forecast'], '2014-08-21');
 
