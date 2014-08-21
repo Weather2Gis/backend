@@ -9,9 +9,9 @@ class ParserYandexTest extends CDbTestCase
 
     protected function setUpBeforeClass()
     {
-        // /test/units/testData/29634.xml
-        // /test/units/testData/2.xml
-        // /test/units/testData/3.xml
+        // /test/units/testData/yandex/29634.xml
+        // /test/units/testData/yandex/27612.xml
+        // /test/units/testData/yandex/28698.xml
         Parse_Yandex::$url = '/test/units/testData/yandex/';
     }
 
@@ -19,12 +19,13 @@ class ParserYandexTest extends CDbTestCase
     {
         return [
             ['Новосибирск', 29634],
-            ['Омск', 2],
-            ['Москва', 3],
+            ['Омск', 27612],
+            ['Москва', 28698],
         ];
     }
 
     /**
+     * Тестируем типы
      * @dataProvider providerCity
      */
     public function testType($name, $id)
@@ -85,7 +86,7 @@ class ParserYandexTest extends CDbTestCase
         $this->assertEquals($data['wind_speed'], 3);
 
         $this->assertInternalType('int', $data['humidity']);
-        $this->assertEquals($data['humidity']), 234;
+//        $this->assertEquals($data['humidity']);
 
         $this->assertInternalType('int', $data['pressure']);
         $this->assertEquals($data['pressure'], 234);
